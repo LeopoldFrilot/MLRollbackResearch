@@ -9,7 +9,8 @@ namespace SharedGame {
         public bool spectator;
     }
 
-    public interface IGame {
+    public interface IGame 
+    {
         int Framenumber { get; }
         int Checksum { get; }
 
@@ -26,7 +27,8 @@ namespace SharedGame {
         void FreeBytes(NativeArray<byte> data);
     }
 
-    public struct StatusInfo {
+    public struct StatusInfo 
+    {
         public float idlePerc;
         public float updatePerc;
         public ChecksumInfo now;
@@ -46,7 +48,8 @@ namespace SharedGame {
         }
     }
 
-    public interface IGameRunner {
+    public interface IGameRunner 
+    {
         IGame Game { get; }
         GameInfo GameInfo { get; }
 
