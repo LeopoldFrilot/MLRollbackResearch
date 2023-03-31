@@ -336,9 +336,9 @@ namespace SharedGame {
             Game.Update(inputs, disconnect_flags);
 
             // update the checksums to display in the top of the window. this helps to detect desyncs.
-            GameInfo.now.framenumber = Game.Framenumber;
+            GameInfo.now.framenumber = Game.FrameNumber;
             GameInfo.now.checksum = Game.Checksum;
-            if ((Game.Framenumber % 90) == 0) {
+            if ((Game.FrameNumber % 90) == 0) {
                 GameInfo.periodic = GameInfo.now;
             }
 

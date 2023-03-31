@@ -112,7 +112,7 @@ namespace VectorWar {
 
     [Serializable]
     public struct VwGame : IGame {
-        public int Framenumber { get; private set; }
+        public int FrameNumber { get; private set; }
 
         public int Checksum => GetHashCode();
 
@@ -121,7 +121,7 @@ namespace VectorWar {
         public static Rect _bounds = new Rect(0, 0, 640, 480);
 
         public void Serialize(BinaryWriter bw) {
-            bw.Write(Framenumber);
+            bw.Write(FrameNumber);
             bw.Write(_ships.Length);
             for (int i = 0; i < _ships.Length; ++i) {
                 _ships[i].Serialize(bw);
@@ -129,7 +129,7 @@ namespace VectorWar {
         }
 
         public void Deserialize(BinaryReader br) {
-            Framenumber = br.ReadInt32();
+            FrameNumber = br.ReadInt32();
             int length = br.ReadInt32();
             if (length != _ships.Length) {
                 _ships = new Ship[length];
@@ -176,7 +176,7 @@ namespace VectorWar {
             var w = _bounds.xMax - _bounds.xMin;
             var h = _bounds.yMax - _bounds.yMin;
             var r = h / 4;
-            Framenumber = 0;
+            FrameNumber = 0;
             _ships = new Ship[num_players];
             for (int i = 0; i < _ships.Length; i++) {
                 _ships[i] = new Ship();
@@ -332,7 +332,7 @@ namespace VectorWar {
         }
 
         public void Update(long[] inputs, int disconnect_flags) {
-            Framenumber++;
+            FrameNumber++;
             for (int i = 0; i < _ships.Length; i++) {
                 float thrust, heading;
                 int fire;
@@ -406,7 +406,7 @@ namespace VectorWar {
 
         public override int GetHashCode() {
             int hashCode = -1214587014;
-            hashCode = hashCode * -1521134295 + Framenumber.GetHashCode();
+            hashCode = hashCode * -1521134295 + FrameNumber.GetHashCode();
             foreach (var ship in _ships) {
                 hashCode = hashCode * -1521134295 + ship.GetHashCode();
             }
