@@ -1,4 +1,5 @@
-﻿using SharedGame;
+﻿using CONST = MLGameConstants;
+using SharedGame;
 using System;
 using System.IO;
 using System.Text;
@@ -10,12 +11,11 @@ using UnityEngine;
 public class MLGame : IGame {
     public int FrameNumber { get; private set; }
     public int Checksum => GetHashCode();
-
     public MLCharacter[] characters;
 
     public MLGame(int numPlayers) {
         FrameNumber = 0;
-        characters = new MLCharacter[Mathf.Min(numPlayers, MLGameConstants.MAX_PLAYERS)];
+        characters = new MLCharacter[Mathf.Min(numPlayers, CONST.MAX_PLAYERS)];
         for (int i = 0; i < characters.Length; i++) {
             characters[i] = new MLCharacter(GetStartingPosition(i));
         }
@@ -24,57 +24,30 @@ public class MLGame : IGame {
     public void Update(long[] inputs, int disconnectFlags) {
         FrameNumber++;
         for (int i = 0; i < characters.Length; i++) {
+            MLInput.FrameButtons frameButtons = new MLInput.FrameButtons();
             if ((disconnectFlags & (1 << i)) != 0) {
                 
             }
             else {
-                ParseCharacterInputs(inputs[i], characters[i]);
+                frameButtons = MLInput.ParseInputs(inputs[i], out string debugString);
+                if (debugString != "") {
+                    Debug.Log($"Inputs frame {FrameNumber}:{debugString}");
+                }
             }
+            characters[i].UseInput(frameButtons);
         }
     }
 
-    private void ParseCharacterInputs(long input, MLCharacter character) {
-        StringBuilder SB = new StringBuilder("");
-        if ((input & MLGameConstants.INPUT_LEFT) != 0) {
-            SB.Append(" Left,");
-        }
-        if ((input & MLGameConstants.INPUT_RIGHT) != 0) {
-            SB.Append(" Right,");
-        }
-        if ((input & MLGameConstants.INPUT_UP) != 0) {
-            SB.Append(" Up,");
-        }
-        if ((input & MLGameConstants.INPUT_DOWN) != 0) {
-            SB.Append(" Down,");
-        }
-        if ((input & MLGameConstants.INPUT_DASH) != 0) {
-            SB.Append(" Dash,");
-        }
-        if ((input & MLGameConstants.INPUT_LIT_ATTACK) != 0) {
-            SB.Append(" Light,");
-        }
-        if ((input & MLGameConstants.INPUT_MED_ATTACK) != 0) {
-            SB.Append(" Medium,");
-        }
-        if ((input & MLGameConstants.INPUT_HEV_ATTACK) != 0) {
-            SB.Append(" Heavy,");
-        }
-        if ((input & MLGameConstants.INPUT_BLOCK) != 0) {
-            SB.Append(" Block,");
-        }
-
-        string debugString = SB.ToString().Trim();
-        if (debugString != "") {
-            Debug.Log($"Inputs frame {FrameNumber}:{debugString}");
-        }
+    public long ReadInputs(int controllerId) {
+        return MLInput.SerializeInputs(controllerId);
     }
 
     private fp2 GetStartingPosition(int characterIndex) {
         switch (characterIndex) {
             case 0:
-                return new fp2(-50, 0);
+                return new fp2(-CONST.STARTING_POSITION_X, 0);
             case 1:
-                return new fp2(50, 0);
+                return new fp2(CONST.STARTING_POSITION_X, 0);
             default:
                 return fp2.zero;
         }
@@ -103,44 +76,6 @@ public class MLGame : IGame {
 
     private void Serialize(BinaryWriter writer) {
         //throw new NotImplementedException();
-    }
-
-    public long ReadInputs(int controllerId) {
-        long input = 0;
-
-        switch (controllerId) {
-            case 0:
-                if (Input.GetKey(KeyCode.W)) {
-                    input |= MLGameConstants.INPUT_UP;
-                }
-                if (Input.GetKey(KeyCode.S)) {
-                    input |= MLGameConstants.INPUT_DOWN;
-                }
-                if (Input.GetKey(KeyCode.A)) {
-                    input |= MLGameConstants.INPUT_LEFT;
-                }
-                if (Input.GetKey(KeyCode.D)) {
-                    input |= MLGameConstants.INPUT_RIGHT;
-                }
-                if (Input.GetKey(KeyCode.LeftShift)) {
-                    input |= MLGameConstants.INPUT_DASH;
-                }
-                if (Input.GetKey(KeyCode.I)) {
-                    input |= MLGameConstants.INPUT_LIT_ATTACK;
-                }
-                if (Input.GetKey(KeyCode.O)) {
-                    input |= MLGameConstants.INPUT_MED_ATTACK;
-                }
-                if (Input.GetKey(KeyCode.P)) {
-                    input |= MLGameConstants.INPUT_HEV_ATTACK;
-                }
-                if (Input.GetKey(KeyCode.LeftControl)) {
-                    input |= MLGameConstants.INPUT_BLOCK;
-                }
-                break;
-        }
-        
-        return input;
     }
 
     public void LogInfo(string filename) {
