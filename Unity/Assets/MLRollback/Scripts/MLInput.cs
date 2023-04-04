@@ -88,19 +88,49 @@ public class MLInput {
                 if (Input.GetKey(KeyCode.LeftShift)) {
                     input |= CONST.INPUT_DASH;
                 }
-                if (Input.GetKey(KeyCode.I)) {
+                if (Input.GetKey(KeyCode.E)) {
                     input |= CONST.INPUT_LIT_ATTACK;
                 }
-                if (Input.GetKey(KeyCode.O)) {
+                if (Input.GetKey(KeyCode.R)) {
                     input |= CONST.INPUT_MED_ATTACK;
                 }
-                if (Input.GetKey(KeyCode.P)) {
+                if (Input.GetKey(KeyCode.T)) {
                     input |= CONST.INPUT_HEV_ATTACK;
                 }
                 if (Input.GetKey(KeyCode.LeftControl)) {
                     input |= CONST.INPUT_BLOCK;
                 }
                 break;
+            case 1:
+                if (Input.GetKey(KeyCode.O)) {
+                    input |= CONST.INPUT_UP;
+                }
+                if (Input.GetKey(KeyCode.L)) {
+                    input |= CONST.INPUT_DOWN;
+                }
+                if (Input.GetKey(KeyCode.K)) {
+                    input |= CONST.INPUT_LEFT;
+                }
+                if (Input.GetKey(KeyCode.Semicolon)) {
+                    input |= CONST.INPUT_RIGHT;
+                }
+                if (Input.GetKey(KeyCode.RightShift)) {
+                    input |= CONST.INPUT_DASH;
+                }
+                if (Input.GetKey(KeyCode.I)) {
+                    input |= CONST.INPUT_LIT_ATTACK;
+                }
+                if (Input.GetKey(KeyCode.U)) {
+                    input |= CONST.INPUT_MED_ATTACK;
+                }
+                if (Input.GetKey(KeyCode.Y)) {
+                    input |= CONST.INPUT_HEV_ATTACK;
+                }
+                if (Input.GetKey(KeyCode.RightControl)) {
+                    input |= CONST.INPUT_BLOCK;
+                }
+                break;
+                
         }
         
         return input;
