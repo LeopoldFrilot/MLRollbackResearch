@@ -1,5 +1,4 @@
-﻿using CONST = MLGameConstants;
-using SharedGame;
+﻿using SharedGame;
 using System;
 using System.IO;
 using System.Text;
@@ -13,9 +12,12 @@ public class MLGame : IGame {
     public int Checksum => GetHashCode();
     public MLCharacter[] characters;
 
+    private MLGameManager GM;
+
     public MLGame(int numPlayers) {
         FrameNumber = 0;
-        characters = new MLCharacter[Mathf.Min(numPlayers, CONST.MAX_PLAYERS)];
+        GM = GameManager.Instance as MLGameManager;
+        characters = new MLCharacter[Mathf.Min(numPlayers, MLConsts.MAX_PLAYERS)];
         for (int i = 0; i < characters.Length; i++) {
             characters[i] = new MLCharacter(GetStartingPosition(i));
         }
@@ -23,6 +25,8 @@ public class MLGame : IGame {
 
     public void Update(long[] inputs, int disconnectFlags) {
         FrameNumber++;
+        
+        // Input Usage
         for (int i = 0; i < characters.Length; i++) {
             MLInput.FrameButtons frameButtons = new MLInput.FrameButtons();
             if ((disconnectFlags & (1 << i)) != 0) {
@@ -31,10 +35,23 @@ public class MLGame : IGame {
             else {
                 frameButtons = MLInput.ParseInputs(inputs[i], out string debugString);
                 if (debugString != "") {
-                    Debug.Log($"Inputs frame {FrameNumber}:{debugString}");
+                    Debug.Log($"Inputs frame {FrameNumber}: {debugString}");
                 }
             }
             characters[i].UseInput(frameButtons);
+        }
+
+        PostInputUpdate();
+    }
+
+    private void PostInputUpdate() {
+        if (characters.Length > 1) {
+            if (GM.physics.IsGrounded(characters[0].position)) {
+                characters[0].facingRight = characters[0].position.x <= characters[1].position.x;
+            }
+            if (GM.physics.IsGrounded(characters[1].position)) {
+                characters[1].facingRight = characters[1].position.x <= characters[0].position.x;
+            }
         }
     }
 
@@ -45,9 +62,9 @@ public class MLGame : IGame {
     private fp2 GetStartingPosition(int characterIndex) {
         switch (characterIndex) {
             case 0:
-                return new fp2(-CONST.STARTING_POSITION_X, 0);
+                return new fp2(-MLConsts.STARTING_POSITION_X, 0);
             case 1:
-                return new fp2(CONST.STARTING_POSITION_X, 0);
+                return new fp2(MLConsts.STARTING_POSITION_X, 0);
             default:
                 return fp2.zero;
         }

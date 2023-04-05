@@ -1,20 +1,18 @@
-﻿using CONST = MLGameConstants;
+﻿using SharedGame;
+using Rect = MLPhysics.Rect;
 using Unity.Mathematics;
 using Unity.Mathematics.FixedPoint;
-using Rect = MLPhysics.Rect;
 
 public class MLCharacter {
     public fp2 position;
+    public bool facingRight;
     
     private Rect hitCollider;
-    private bool facingRight;
-    private MLPhysics physics;
+    private MLGameManager GM;
 
     public MLCharacter(fp2 startingPosition) {
         position = startingPosition;
-        physics = new MLPhysics(new Rect(
-            new fp2(-CONST.PLAY_AREA_WIDTH / 2, CONST.PLAY_AREA_HEIGHT),
-            new fp2(CONST.PLAY_AREA_WIDTH / 2, CONST.PLAY_AREA_GROUND)));
+        GM = GameManager.Instance as MLGameManager;
     }
 
     public void UseInput(MLInput.FrameButtons frameButtons) {
@@ -35,6 +33,7 @@ public class MLCharacter {
                     break;
             }
         }
-        position = physics.MoveCharacter(position, movementTracking);
+        
+        position = GM.physics.MoveCharacter(position, movementTracking);
     }
 }

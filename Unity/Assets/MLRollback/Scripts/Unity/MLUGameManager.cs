@@ -1,6 +1,5 @@
 ﻿using SharedGame;
 using System;
-using CONST = MLGameConstants;
 using UnityEngine;
 
 public class MLUGameManager : MonoBehaviour {
@@ -28,7 +27,7 @@ public class MLUGameManager : MonoBehaviour {
         }
 
         for (int i = 0; i < registeredCharacters.Length; i++){
-            registeredCharacters[i].UpdatePosition(characters[i].position);
+            registeredCharacters[i].UpdateCharacter(characters[i], info.players[i]);
         }
     }
 
@@ -37,7 +36,6 @@ public class MLUGameManager : MonoBehaviour {
         registeredCharacters = new MLUCharacter[characters.Length];
         for (int i = 0; i < characters.Length; i++) {
             MLUCharacter newCharacter = Instantiate(characterPrefab).GetComponent<MLUCharacter>();
-            newCharacter.Initialize(characters[i], info.players[i]);
             registeredCharacters[i] = newCharacter;
         }
     }

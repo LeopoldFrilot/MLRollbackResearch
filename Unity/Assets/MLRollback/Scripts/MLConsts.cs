@@ -1,6 +1,4 @@
-﻿using Unity.Mathematics.FixedPoint;
-
-public static class MLGameConstants {
+﻿public static class MLConsts {
     public const int PLAY_AREA_WIDTH = 16;
     public const int PLAY_AREA_HEIGHT = 99;
     public const int PLAY_AREA_GROUND = 0;
