@@ -9,7 +9,7 @@ public class MLPhysics {
         this.playAreaExtents = playAreaExtents;
     }
 
-    public fp2 MoveCharacter(fp2 curPosition, int2 direction) {
+    public fp2 MovePhysicsObject(fp2 curPosition, int2 direction) {
         fp newX = fpmath.clamp(curPosition.x + moveSpeed * direction.x, playAreaExtents.Left, playAreaExtents.Right);
         fp newY = fpmath.clamp(curPosition.y + direction.y, playAreaExtents.Bottom, playAreaExtents.Top);
         fp2 newPosition = new fp2(newX, newY);

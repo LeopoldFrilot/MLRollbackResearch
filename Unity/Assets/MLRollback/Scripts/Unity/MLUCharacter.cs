@@ -9,12 +9,13 @@ public class MLUCharacter : MonoBehaviour {
     [SerializeField] private TextMeshProUGUI statusTextBox;
     [SerializeField] private Image imgProgress;
     [SerializeField] private Transform characterArt;
+    [SerializeField] private SpriteRenderer bodyArt;
     
     public void UpdateCharacter(MLCharacter character, PlayerConnectionInfo info) {
         UpdatePosition(character.position);
         Vector3 scale = characterArt.localScale;
         characterArt.localScale = new Vector3((character.facingRight ? 1 : -1) * Mathf.Abs(scale.x), scale.y, scale.z);
-        
+        bodyArt.color = character.playerIndex == 0 ? Color.blue : Color.red;
         UpdateConnectionInfo(info);
     }
 

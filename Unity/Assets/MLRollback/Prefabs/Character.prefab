@@ -566,3 +566,4 @@ MonoBehaviour:
   statusTextBox: {fileID: 5257533248408998000}
   imgProgress: {fileID: 4947555751151674186}
   characterArt: {fileID: 624652095177633213}
+  bodyArt: {fileID: 2550287184968765286}

@@ -5,7 +5,6 @@ using Unity.Mathematics.FixedPoint;
 using UnityGGPO;
 
 public class MLGameManager : GameManager {
-    public MLInput input;
     public MLPhysics physics;
     
     public override void StartLocalGame() {
@@ -21,7 +20,6 @@ public class MLGameManager : GameManager {
     }
 
     private void Setup() {
-        input = new MLInput();
         physics = new MLPhysics(new Rect(
             new fp2(-MLConsts.PLAY_AREA_WIDTH / 2, MLConsts.PLAY_AREA_HEIGHT),
             new fp2(MLConsts.PLAY_AREA_WIDTH / 2, MLConsts.PLAY_AREA_GROUND)));
