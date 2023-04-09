@@ -44,8 +44,10 @@ namespace SharedGame {
         }
 
         private void OnDestroy() {
-            gameManager.OnStatus -= OnStatus;
-            gameManager.OnRunningChanged -= OnRunningChanged;
+            if (gameManager) {
+                gameManager.OnStatus -= OnStatus;
+                gameManager.OnRunningChanged -= OnRunningChanged;
+            }
             GGPORunner.OnPluginLog -= OnPluginLog;
             GGPORunner.OnGameLog -= OnGameLog;
 

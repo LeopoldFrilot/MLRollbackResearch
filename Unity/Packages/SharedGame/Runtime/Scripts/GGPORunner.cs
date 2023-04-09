@@ -394,6 +394,9 @@ namespace SharedGame {
                 }
                 frameWatch.Stop();
             }
+            else {
+                UnityEngine.Debug.LogWarning($"WARNING: {GGPO.GetErrorCodeMessage(result)}");
+            }
         }
 
         /*

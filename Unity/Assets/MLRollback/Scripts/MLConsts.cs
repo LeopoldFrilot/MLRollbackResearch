@@ -16,4 +16,17 @@
 
     public const int STARTING_POSITION_X = 4;
     public const int MAX_ROUND_TIME = 99;
+
+    public static int GetLagAmount(LagTypes type) {
+        switch (type) {
+            case LagTypes.JumpStart:
+                return 3;
+            case LagTypes.Dash:
+                return 60;
+            case LagTypes.LandingLag:
+                return 5;
+            default:
+                return 0;
+        }
+    }
 }

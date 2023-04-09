@@ -20,6 +20,8 @@ public class MLGame : IGame, IMLSerializable {
         characters = new MLCharacter[Mathf.Min(numPlayers, MLConsts.MAX_PLAYERS)];
         for (int i = 0; i < characters.Length; i++) {
             characters[i] = new MLCharacter(i, GetStartingPosition(i));
+            IMLPhysicsObject PO = characters[i];
+            GM.physics.RegisterPhysicsObject(ref PO);
         }
     }
 
@@ -37,10 +39,11 @@ public class MLGame : IGame, IMLSerializable {
                     GGPORunner.LogGame($"Inputs frame {FrameNumber}, Player: {characters[i].playerIndex}: {debugString}");
                 }
             }
-            characters[i].UseInput(frameButtons);
+            characters[i].UseInput(frameButtons, FrameNumber);
         }
 
         PostInputUpdate();
+        GM.physics.UpdatePhysics(FrameNumber);
     }
 
     private void PostInputUpdate() {
@@ -61,8 +64,8 @@ public class MLGame : IGame, IMLSerializable {
         SB.AppendFormat("  num_characters: {0}.\n", characters.Length);
         for (int i = 0; i < characters.Length; i++) {
             var character = characters[i];
-            SB.AppendFormat("  ship {0} position:  %.4f, %.4f\n", i, character.physicsObject.curPosition.x, character.physicsObject.curPosition.y);
-            SB.AppendFormat("  ship {0} facing direction: %s.\n", i, character.facingRight ? "Right" : "Left");
+            SB.AppendFormat("  ship {0} position:  {1}\n", i, character.physicsObject.curPosition);
+            SB.AppendFormat("  ship {0} facing direction: {1}.\n", i, character.facingRight ? "Right" : "Left");
         }
         File.WriteAllText(filename, SB.ToString());
     }
