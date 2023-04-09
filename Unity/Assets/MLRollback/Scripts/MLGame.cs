@@ -45,11 +45,11 @@ public class MLGame : IGame, IMLSerializable {
 
     private void PostInputUpdate() {
         if (characters.Length > 1) {
-            if (GM.physics.IsGrounded(characters[0].position)) {
-                characters[0].facingRight = characters[0].position.x <= characters[1].position.x;
+            if (GM.physics.IsGrounded(characters[0].physicsObject.curPosition)) {
+                characters[0].facingRight = characters[0].physicsObject.curPosition.x <= characters[1].physicsObject.curPosition.x;
             }
-            if (GM.physics.IsGrounded(characters[1].position)) {
-                characters[1].facingRight = characters[1].position.x <= characters[0].position.x;
+            if (GM.physics.IsGrounded(characters[1].physicsObject.curPosition)) {
+                characters[1].facingRight = characters[1].physicsObject.curPosition.x <= characters[0].physicsObject.curPosition.x;
             }
         }
     }
@@ -61,7 +61,7 @@ public class MLGame : IGame, IMLSerializable {
         SB.AppendFormat("  num_characters: {0}.\n", characters.Length);
         for (int i = 0; i < characters.Length; i++) {
             var character = characters[i];
-            SB.AppendFormat("  ship {0} position:  %.4f, %.4f\n", i, character.position.x, character.position.y);
+            SB.AppendFormat("  ship {0} position:  %.4f, %.4f\n", i, character.physicsObject.curPosition.x, character.physicsObject.curPosition.y);
             SB.AppendFormat("  ship {0} facing direction: %s.\n", i, character.facingRight ? "Right" : "Left");
         }
         File.WriteAllText(filename, SB.ToString());

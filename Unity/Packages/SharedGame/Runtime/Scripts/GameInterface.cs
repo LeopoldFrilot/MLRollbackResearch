@@ -81,7 +81,7 @@ namespace SharedGame {
 
         private void OnGameLog(string text) {
             if (gameLog) {
-                Debug.Log("[GameLog] " + text);
+                //Debug.Log("[GameLog] " + text);
             }
             gameLogs.Insert(0, text);
             while (gameLogs.Count > maxLogLines) {

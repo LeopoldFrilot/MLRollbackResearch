@@ -8,16 +8,16 @@ using UnityEngine;
 
 [Serializable]
 public class MLCharacter : IMLSerializable {
-    public fp2 position;
     public bool facingRight;
     public int playerIndex;
+    public PhysicsObject physicsObject;
     
     private Rect hitCollider;
     private MLGameManager GM;
 
     public MLCharacter(int playerIndex, fp2 startingPosition) {
         this.playerIndex = playerIndex;
-        position = startingPosition;
+        physicsObject = new PhysicsObject(startingPosition);
         GM = GameManager.Instance as MLGameManager;
     }
 
@@ -41,28 +41,26 @@ public class MLCharacter : IMLSerializable {
             }
         }
         
-        position = GM.physics.MovePhysicsObject(position, movementTracking);
+        physicsObject.curPosition = GM.physics.MovePhysicsObject(ref physicsObject, movementTracking);
     }
 
     public void HandleDisconnectedFrame() {
-        position = GM.physics.MovePhysicsObject(position, int2.zero);
+        physicsObject.curPosition = GM.physics.MovePhysicsObject(ref physicsObject, int2.zero);
     }
 
     public void Serialize(BinaryWriter bw) {
-        bw.Write(position.x);
-        bw.Write(position.y);
+        physicsObject.Serialize(bw);
         bw.Write(facingRight);
     }
 
     public void Deserialize(BinaryReader br) {
-        position.x = br.ReadDecimal();
-        position.y = br.ReadDecimal();
+        physicsObject.Deserialize(br);
         facingRight = br.ReadBoolean();
     }
 
     public override int GetHashCode() {
         int hashCode = 1858597544;
-        hashCode = hashCode * -1521134295 + position.GetHashCode();
+        hashCode = hashCode * -1521134295 + physicsObject.GetHashCode();
         hashCode = hashCode * -1521134295 + facingRight.GetHashCode();
         return hashCode;
     }
