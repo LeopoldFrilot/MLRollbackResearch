@@ -10,15 +10,17 @@ public class MLCharacter : IMLSerializable, IMLPhysicsObject {
     public PhysicsObject physicsObject;
     public bool facingRight;
     public MLLag lag;
+    public MLAnimationManager animManager;
 
     // NotRolledBack 
     public int playerIndex;
     
     private MLGameManager GM;
 
-    public MLCharacter(int playerIndex, fp2 startingPosition) {
+    public MLCharacter(int playerIndex, fp2 startingPosition, MLAnimationData[] animData) {
         this.playerIndex = playerIndex;
         physicsObject = new PhysicsObject(startingPosition);
+        animManager = new MLAnimationManager(animData);
         lag = new MLLag();
         GM = GameManager.Instance as MLGameManager;
         physicsObject.OnGrounded += OnGrounded;
@@ -76,12 +78,14 @@ public class MLCharacter : IMLSerializable, IMLPhysicsObject {
         physicsObject.Serialize(bw);
         bw.Write(facingRight);
         lag.Serialize(bw);
+        animManager.Serialize(bw);
     }
 
     public void Deserialize(BinaryReader br) {
         physicsObject.Deserialize(br);
         facingRight = br.ReadBoolean();
         lag.Deserialize(br);
+        animManager.Deserialize(br);
     }
 
     public override int GetHashCode() {
@@ -89,6 +93,7 @@ public class MLCharacter : IMLSerializable, IMLPhysicsObject {
         hashCode = hashCode * -1521134295 + physicsObject.GetHashCode();
         hashCode = hashCode * -1521134295 + facingRight.GetHashCode();
         hashCode = hashCode * -1521134295 + lag.GetHashCode();
+        hashCode = hashCode * -1521134295 + animManager.GetHashCode();
         return hashCode;
     }
 

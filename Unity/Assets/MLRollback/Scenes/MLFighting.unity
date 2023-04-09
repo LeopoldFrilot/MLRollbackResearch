@@ -550,6 +550,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   useNewUpdate: 1
+  unityCharacterInPlay: {fileID: 8849836321361442674, guid: 4018c8c5cd5d4f8478e19ce30026dfe5,
+    type: 3}
 --- !u!114 &995625984
 MonoBehaviour:
   m_ObjectHideFlags: 0

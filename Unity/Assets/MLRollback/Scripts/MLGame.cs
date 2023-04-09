@@ -14,12 +14,12 @@ public class MLGame : IGame, IMLSerializable {
 
     private MLGameManager GM;
 
-    public MLGame(int numPlayers) {
+    public MLGame(int numPlayers, MLAnimationData[] allAnimData) {
         FrameNumber = 0;
         GM = GameManager.Instance as MLGameManager;
         characters = new MLCharacter[Mathf.Min(numPlayers, MLConsts.MAX_PLAYERS)];
         for (int i = 0; i < characters.Length; i++) {
-            characters[i] = new MLCharacter(i, GetStartingPosition(i));
+            characters[i] = new MLCharacter(i, GetStartingPosition(i), allAnimData);
             IMLPhysicsObject PO = characters[i];
             GM.physics.RegisterPhysicsObject(ref PO);
         }
@@ -41,9 +41,9 @@ public class MLGame : IGame, IMLSerializable {
             }
             characters[i].UseInput(frameButtons, FrameNumber);
         }
+        GM.physics.UpdatePhysics(FrameNumber);
 
         PostInputUpdate();
-        GM.physics.UpdatePhysics(FrameNumber);
     }
 
     private void PostInputUpdate() {
@@ -53,6 +53,19 @@ public class MLGame : IGame, IMLSerializable {
             }
             if (GM.physics.IsGrounded(characters[1].physicsObject.curPosition)) {
                 characters[1].facingRight = characters[1].physicsObject.curPosition.x <= characters[0].physicsObject.curPosition.x;
+            }
+        }
+
+        foreach (MLCharacter character in characters) {
+            MLAnimationManager anim = character.animManager;
+            if (anim.curAnimationType == AnimationTypes.Idle && character.physicsObject.velocity.x != 0) {
+                anim.StartAnimation(AnimationTypes.Run);
+            }
+            else if (anim.curAnimationType == AnimationTypes.Run && character.physicsObject.velocity.x == 0) {
+                anim.StartAnimation(AnimationTypes.Idle);
+            }
+            else {
+                anim.ProgressAnimation();
             }
         }
     }

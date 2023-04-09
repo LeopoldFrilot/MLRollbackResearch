@@ -1,0 +1,80 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 03267ec6dae54f75a1217e7777a4b381, type: 3}
+  m_Name: Spartan_Light
+  m_EditorClassIdentifier: 
+  animationType: 4
+  spritesData:
+  - sprite: {fileID: 21300000, guid: e22609a1cb4f2d84c8f1db7acfe6b452, type: 3}
+    hitbox:
+      serializedVersion: 2
+      x: 0
+      y: 0
+      width: 0
+      height: 0
+  - sprite: {fileID: 21300000, guid: e22609a1cb4f2d84c8f1db7acfe6b452, type: 3}
+    hitbox:
+      serializedVersion: 2
+      x: 0
+      y: 0
+      width: 0
+      height: 0
+  - sprite: {fileID: 21300000, guid: e22609a1cb4f2d84c8f1db7acfe6b452, type: 3}
+    hitbox:
+      serializedVersion: 2
+      x: 0
+      y: 0
+      width: 0
+      height: 0
+  - sprite: {fileID: 21300000, guid: 4b3b15d314e9df64a9dbf8529f3464b3, type: 3}
+    hitbox:
+      serializedVersion: 2
+      x: 0
+      y: 0
+      width: 0
+      height: 0
+  - sprite: {fileID: 21300000, guid: 4b3b15d314e9df64a9dbf8529f3464b3, type: 3}
+    hitbox:
+      serializedVersion: 2
+      x: 0
+      y: 0
+      width: 0
+      height: 0
+  - sprite: {fileID: 21300000, guid: 10092d3d33a0b8a40bc10fb04133ba21, type: 3}
+    hitbox:
+      serializedVersion: 2
+      x: 0
+      y: 0
+      width: 0
+      height: 0
+  - sprite: {fileID: 21300000, guid: 10092d3d33a0b8a40bc10fb04133ba21, type: 3}
+    hitbox:
+      serializedVersion: 2
+      x: 0
+      y: 0
+      width: 0
+      height: 0
+  - sprite: {fileID: 21300000, guid: 10092d3d33a0b8a40bc10fb04133ba21, type: 3}
+    hitbox:
+      serializedVersion: 2
+      x: 0
+      y: 0
+      width: 0
+      height: 0
+  - sprite: {fileID: 21300000, guid: 10092d3d33a0b8a40bc10fb04133ba21, type: 3}
+    hitbox:
+      serializedVersion: 2
+      x: 0
+      y: 0
+      width: 0
+      height: 0
+  loopable: 0

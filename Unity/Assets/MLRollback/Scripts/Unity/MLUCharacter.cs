@@ -1,4 +1,5 @@
 ﻿using SharedGame;
+using System.Collections.Generic;
 using TMPro;
 using Unity.Mathematics.FixedPoint;
 using UnityEngine;
@@ -10,13 +11,23 @@ public class MLUCharacter : MonoBehaviour {
     [SerializeField] private Image imgProgress;
     [SerializeField] private Transform characterArt;
     [SerializeField] private SpriteRenderer bodyArt;
+    public List<MLUAnimationSO> animations;
     
     public void UpdateCharacter(MLCharacter character, PlayerConnectionInfo info) {
         UpdatePosition(character.physicsObject.curPosition);
         Vector3 scale = characterArt.localScale;
         characterArt.localScale = new Vector3((character.facingRight ? 1 : -1) * Mathf.Abs(scale.x), scale.y, scale.z);
-        bodyArt.color = character.playerIndex == 0 ? Color.blue : Color.red;
+        bodyArt.color = character.playerIndex == 0 ? Color.white : Color.red;
         UpdateConnectionInfo(info);
+        foreach (MLUAnimationSO animationSO in animations) {
+            if (animationSO.animationType == character.animManager.curAnimationType) {
+                Sprite sprite = animationSO.GetAnimationData(character.animManager.currentAnimationFrame).sprite;
+                if (sprite) {
+                    bodyArt.sprite = sprite;
+                }
+                break;
+            }
+        }
     }
 
     private void UpdatePosition(fp2 newPosition) {
