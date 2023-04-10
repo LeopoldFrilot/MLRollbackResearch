@@ -22,7 +22,7 @@
             case LagTypes.JumpStart:
                 return 3;
             case LagTypes.Dash:
-                return 60;
+                return 20;
             case LagTypes.LandingLag:
                 return 5;
             default:

@@ -21,6 +21,189 @@ MonoBehaviour:
       y: 0
       width: 0
       height: 0
+    damage: 0
+    launchAngle: {x: 0, y: 0}
+    blockKnockback: 0
+  - sprite: {fileID: 0}
+    hitbox:
+      serializedVersion: 2
+      x: 0
+      y: 0
+      width: 0
+      height: 0
+    damage: 0
+    launchAngle: {x: 0, y: 0}
+    blockKnockback: 0
+  - sprite: {fileID: 0}
+    hitbox:
+      serializedVersion: 2
+      x: 0
+      y: 0
+      width: 0
+      height: 0
+    damage: 0
+    launchAngle: {x: 0, y: 0}
+    blockKnockback: 0
+  - sprite: {fileID: 0}
+    hitbox:
+      serializedVersion: 2
+      x: 0
+      y: 0
+      width: 0
+      height: 0
+    damage: 0
+    launchAngle: {x: 0, y: 0}
+    blockKnockback: 0
+  - sprite: {fileID: 0}
+    hitbox:
+      serializedVersion: 2
+      x: 0
+      y: 0
+      width: 0
+      height: 0
+    damage: 0
+    launchAngle: {x: 0, y: 0}
+    blockKnockback: 0
+  - sprite: {fileID: 0}
+    hitbox:
+      serializedVersion: 2
+      x: 0
+      y: 0
+      width: 0
+      height: 0
+    damage: 0
+    launchAngle: {x: 0, y: 0}
+    blockKnockback: 0
+  - sprite: {fileID: 21300000, guid: 4b3b15d314e9df64a9dbf8529f3464b3, type: 3}
+    hitbox:
+      serializedVersion: 2
+      x: 0.96
+      y: 1.53
+      width: 2.45
+      height: 1
+    damage: 25
+    launchAngle: {x: 1, y: 0.3}
+    blockKnockback: 0.5
+  - sprite: {fileID: 0}
+    hitbox:
+      serializedVersion: 2
+      x: 0
+      y: 0
+      width: 0
+      height: 0
+    damage: 0
+    launchAngle: {x: 0, y: 0}
+    blockKnockback: 0
+  - sprite: {fileID: 21300000, guid: 10092d3d33a0b8a40bc10fb04133ba21, type: 3}
+    hitbox:
+      serializedVersion: 2
+      x: 0
+      y: 0
+      width: 0
+      height: 0
+    damage: 0
+    launchAngle: {x: 0, y: 0}
+    blockKnockback: 0
+  - sprite: {fileID: 0}
+    hitbox:
+      serializedVersion: 2
+      x: 0
+      y: 0
+      width: 0
+      height: 0
+    damage: 0
+    launchAngle: {x: 0, y: 0}
+    blockKnockback: 0
+  - sprite: {fileID: 0}
+    hitbox:
+      serializedVersion: 2
+      x: 0
+      y: 0
+      width: 0
+      height: 0
+    damage: 0
+    launchAngle: {x: 0, y: 0}
+    blockKnockback: 0
+  - sprite: {fileID: 0}
+    hitbox:
+      serializedVersion: 2
+      x: 0
+      y: 0
+      width: 0
+      height: 0
+    damage: 0
+    launchAngle: {x: 0, y: 0}
+    blockKnockback: 0
+  - sprite: {fileID: 0}
+    hitbox:
+      serializedVersion: 2
+      x: 0
+      y: 0
+      width: 0
+      height: 0
+    damage: 0
+    launchAngle: {x: 0, y: 0}
+    blockKnockback: 0
+  - sprite: {fileID: 0}
+    hitbox:
+      serializedVersion: 2
+      x: 0
+      y: 0
+      width: 0
+      height: 0
+    damage: 0
+    launchAngle: {x: 0, y: 0}
+    blockKnockback: 0
+  - sprite: {fileID: 0}
+    hitbox:
+      serializedVersion: 2
+      x: 0
+      y: 0
+      width: 0
+      height: 0
+    damage: 0
+    launchAngle: {x: 0, y: 0}
+    blockKnockback: 0
+  - sprite: {fileID: 0}
+    hitbox:
+      serializedVersion: 2
+      x: 0
+      y: 0
+      width: 0
+      height: 0
+    damage: 0
+    launchAngle: {x: 0, y: 0}
+    blockKnockback: 0
+  - sprite: {fileID: 0}
+    hitbox:
+      serializedVersion: 2
+      x: 0
+      y: 0
+      width: 0
+      height: 0
+    damage: 0
+    launchAngle: {x: 0, y: 0}
+    blockKnockback: 0
+  - sprite: {fileID: 0}
+    hitbox:
+      serializedVersion: 2
+      x: 0
+      y: 0
+      width: 0
+      height: 0
+    damage: 0
+    launchAngle: {x: 0, y: 0}
+    blockKnockback: 0
+  - sprite: {fileID: 0}
+    hitbox:
+      serializedVersion: 2
+      x: 0
+      y: 0
+      width: 0
+      height: 0
+    damage: 0
+    launchAngle: {x: 0, y: 0}
+    blockKnockback: 0
   - sprite: {fileID: 21300000, guid: e22609a1cb4f2d84c8f1db7acfe6b452, type: 3}
     hitbox:
       serializedVersion: 2
@@ -28,53 +211,37 @@ MonoBehaviour:
       y: 0
       width: 0
       height: 0
-  - sprite: {fileID: 21300000, guid: e22609a1cb4f2d84c8f1db7acfe6b452, type: 3}
+    damage: 0
+    launchAngle: {x: 0, y: 0}
+    blockKnockback: 0
+  - sprite: {fileID: 0}
     hitbox:
       serializedVersion: 2
       x: 0
       y: 0
       width: 0
       height: 0
-  - sprite: {fileID: 21300000, guid: 4b3b15d314e9df64a9dbf8529f3464b3, type: 3}
+    damage: 0
+    launchAngle: {x: 0, y: 0}
+    blockKnockback: 0
+  - sprite: {fileID: 0}
     hitbox:
       serializedVersion: 2
       x: 0
       y: 0
       width: 0
       height: 0
-  - sprite: {fileID: 21300000, guid: 4b3b15d314e9df64a9dbf8529f3464b3, type: 3}
+    damage: 0
+    launchAngle: {x: 0, y: 0}
+    blockKnockback: 0
+  - sprite: {fileID: 0}
     hitbox:
       serializedVersion: 2
       x: 0
       y: 0
       width: 0
       height: 0
-  - sprite: {fileID: 21300000, guid: 10092d3d33a0b8a40bc10fb04133ba21, type: 3}
-    hitbox:
-      serializedVersion: 2
-      x: 0
-      y: 0
-      width: 0
-      height: 0
-  - sprite: {fileID: 21300000, guid: 10092d3d33a0b8a40bc10fb04133ba21, type: 3}
-    hitbox:
-      serializedVersion: 2
-      x: 0
-      y: 0
-      width: 0
-      height: 0
-  - sprite: {fileID: 21300000, guid: 10092d3d33a0b8a40bc10fb04133ba21, type: 3}
-    hitbox:
-      serializedVersion: 2
-      x: 0
-      y: 0
-      width: 0
-      height: 0
-  - sprite: {fileID: 21300000, guid: 10092d3d33a0b8a40bc10fb04133ba21, type: 3}
-    hitbox:
-      serializedVersion: 2
-      x: 0
-      y: 0
-      width: 0
-      height: 0
+    damage: 0
+    launchAngle: {x: 0, y: 0}
+    blockKnockback: 0
   loopable: 0

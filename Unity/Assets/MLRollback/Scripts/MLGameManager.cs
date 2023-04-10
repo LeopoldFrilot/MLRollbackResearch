@@ -15,12 +15,8 @@ public class MLGameManager : GameManager {
 
     private MLAnimationData[] ExtractAnimData() {
         var data = new MLAnimationData[unityCharacterInPlay.animations.Count];
-        for (int i = 0; i < unityCharacterInPlay.animations.Count; i++) {
-            var newData = new MLAnimationData {
-                frames = unityCharacterInPlay.animations[i].spritesData.Count,
-                loopable = unityCharacterInPlay.animations[i].loopable,
-                animationType = unityCharacterInPlay.animations[i].animationType
-            };
+        for (int i = 0; i < data.Length; i++) {
+            var newData = new MLAnimationData(unityCharacterInPlay.animations[i]);
             data[i] = newData;
         }
         return data;

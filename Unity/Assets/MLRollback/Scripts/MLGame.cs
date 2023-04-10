@@ -49,7 +49,6 @@ public class MLGame : IGame, IMLSerializable {
     private void PostInputUpdate() {
         if (characters.Length > 1) {
             if (GM.physics.IsGrounded(characters[0].physicsObject.curPosition)) {
-                characters[0].facingRight = characters[0].physicsObject.curPosition.x <= characters[1].physicsObject.curPosition.x;
             }
             if (GM.physics.IsGrounded(characters[1].physicsObject.curPosition)) {
                 characters[1].facingRight = characters[1].physicsObject.curPosition.x <= characters[0].physicsObject.curPosition.x;
@@ -57,9 +56,22 @@ public class MLGame : IGame, IMLSerializable {
         }
 
         foreach (MLCharacter character in characters) {
+            if (character.playerIndex == 0 && characters.Length > 1) {
+                character.facingRight = character.physicsObject.curPosition.x <= characters[1].physicsObject.curPosition.x;
+            }
+            else if (character.playerIndex == 1) {
+                character.facingRight = !characters[0].facingRight;
+            }
+            
             MLAnimationManager anim = character.animManager;
-            if (anim.curAnimationType == AnimationTypes.Idle && character.physicsObject.velocity.x != 0) {
+            if (anim.curAnimationType == AnimationTypes.Idle && !GM.physics.IsGrounded(character.physicsObject.curPosition)) {
+                anim.StartAnimation(AnimationTypes.Airborne);
+            }
+            else if (anim.curAnimationType == AnimationTypes.Idle && character.physicsObject.velocity.x != 0) {
                 anim.StartAnimation(AnimationTypes.Run);
+            } 
+            else if (anim.curAnimationType == AnimationTypes.Airborne && GM.physics.IsGrounded(character.physicsObject.curPosition)) {
+                anim.StartAnimation(AnimationTypes.Idle);
             }
             else if (anim.curAnimationType == AnimationTypes.Run && character.physicsObject.velocity.x == 0) {
                 anim.StartAnimation(AnimationTypes.Idle);

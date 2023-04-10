@@ -8,6 +8,11 @@ public class MLUAnimationSO : ScriptableObject {
     public struct AnimationFrameData {
         public Sprite sprite;
         public Rect hitbox;
+        public int damage;
+        public Vector2 launchAngle;
+        public float blockKnockback;
+        public int hitStun;
+        public int blockStun;
     }
 
     public struct KeyFrame {

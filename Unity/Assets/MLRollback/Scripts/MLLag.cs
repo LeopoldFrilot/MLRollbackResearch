@@ -5,6 +5,8 @@ public enum LagTypes {
     JumpStart,
     Dash,
     LandingLag,
+    Attack,
+    Hit
 }
 
 public class MLLag : IMLSerializable {
@@ -15,9 +17,9 @@ public class MLLag : IMLSerializable {
         currentLagType = LagTypes.None;
     }
 
-    public void ApplyLag(LagTypes lagType, int currentFrame) {
+    public void ApplyLag(LagTypes lagType, int currentFrame, int lagLengthOverride = -1) {
         currentLagType = lagType;
-        frameLagFinishes = MLConsts.GetLagAmount(lagType) + currentFrame;
+        frameLagFinishes = lagLengthOverride >= 0 ? currentFrame + lagLengthOverride : MLConsts.GetLagAmount(lagType) + currentFrame;
     }
 
     public LagTypes GetLagType(int currentFrame) {
