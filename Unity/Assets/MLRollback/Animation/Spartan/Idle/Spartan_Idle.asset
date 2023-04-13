@@ -14,172 +14,60 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   animationType: 0
   spritesData:
-  - sprite: {fileID: 21300000, guid: 899e5e95fb65a674eae444de387b04ed, type: 3}
-    hitbox:
+  - frame: 0
+    sprite: {fileID: 21300000, guid: 899e5e95fb65a674eae444de387b04ed, type: 3}
+    hurtbox:
       serializedVersion: 2
-      x: 0
-      y: 0
-      width: 0
-      height: 0
-  - sprite: {fileID: 0}
-    hitbox:
+      x: 0.04437113
+      y: 1.387524
+      width: 1.569688
+      height: 2.422643
+    hitboxes: []
+    damage: 0
+    launchAngle: {x: 0, y: 0}
+    blockKnockback: 0
+    hitStun: 0
+    blockStun: 0
+  - frame: 8
+    sprite: {fileID: 21300000, guid: 6fba4e4dee06d564390006197d8e5e67, type: 3}
+    hurtbox:
       serializedVersion: 2
-      x: 0
-      y: 0
-      width: 0
-      height: 0
-  - sprite: {fileID: 0}
-    hitbox:
+      x: 0.04437113
+      y: 1.387524
+      width: 1.569688
+      height: 2.422643
+    hitboxes: []
+    damage: 0
+    launchAngle: {x: 0, y: 0}
+    blockKnockback: 0
+    hitStun: 0
+    blockStun: 0
+  - frame: 16
+    sprite: {fileID: 21300000, guid: 10f19a217072cca41a0317020d28c0bf, type: 3}
+    hurtbox:
       serializedVersion: 2
-      x: 0
-      y: 0
-      width: 0
-      height: 0
-  - sprite: {fileID: 0}
-    hitbox:
+      x: 0.04437113
+      y: 1.387524
+      width: 1.569688
+      height: 2.422643
+    hitboxes: []
+    damage: 0
+    launchAngle: {x: 0, y: 0}
+    blockKnockback: 0
+    hitStun: 0
+    blockStun: 0
+  - frame: 23
+    sprite: {fileID: 21300000, guid: 10f19a217072cca41a0317020d28c0bf, type: 3}
+    hurtbox:
       serializedVersion: 2
-      x: 0
-      y: 0
-      width: 0
-      height: 0
-  - sprite: {fileID: 0}
-    hitbox:
-      serializedVersion: 2
-      x: 0
-      y: 0
-      width: 0
-      height: 0
-  - sprite: {fileID: 0}
-    hitbox:
-      serializedVersion: 2
-      x: 0
-      y: 0
-      width: 0
-      height: 0
-  - sprite: {fileID: 0}
-    hitbox:
-      serializedVersion: 2
-      x: 0
-      y: 0
-      width: 0
-      height: 0
-  - sprite: {fileID: 0}
-    hitbox:
-      serializedVersion: 2
-      x: 0
-      y: 0
-      width: 0
-      height: 0
-  - sprite: {fileID: 21300000, guid: 6fba4e4dee06d564390006197d8e5e67, type: 3}
-    hitbox:
-      serializedVersion: 2
-      x: 0
-      y: 0
-      width: 0
-      height: 0
-  - sprite: {fileID: 0}
-    hitbox:
-      serializedVersion: 2
-      x: 0
-      y: 0
-      width: 0
-      height: 0
-  - sprite: {fileID: 0}
-    hitbox:
-      serializedVersion: 2
-      x: 0
-      y: 0
-      width: 0
-      height: 0
-  - sprite: {fileID: 0}
-    hitbox:
-      serializedVersion: 2
-      x: 0
-      y: 0
-      width: 0
-      height: 0
-  - sprite: {fileID: 0}
-    hitbox:
-      serializedVersion: 2
-      x: 0
-      y: 0
-      width: 0
-      height: 0
-  - sprite: {fileID: 0}
-    hitbox:
-      serializedVersion: 2
-      x: 0
-      y: 0
-      width: 0
-      height: 0
-  - sprite: {fileID: 0}
-    hitbox:
-      serializedVersion: 2
-      x: 0
-      y: 0
-      width: 0
-      height: 0
-  - sprite: {fileID: 0}
-    hitbox:
-      serializedVersion: 2
-      x: 0
-      y: 0
-      width: 0
-      height: 0
-  - sprite: {fileID: 21300000, guid: 10f19a217072cca41a0317020d28c0bf, type: 3}
-    hitbox:
-      serializedVersion: 2
-      x: 0
-      y: 0
-      width: 0
-      height: 0
-  - sprite: {fileID: 0}
-    hitbox:
-      serializedVersion: 2
-      x: 0
-      y: 0
-      width: 0
-      height: 0
-  - sprite: {fileID: 0}
-    hitbox:
-      serializedVersion: 2
-      x: 0
-      y: 0
-      width: 0
-      height: 0
-  - sprite: {fileID: 0}
-    hitbox:
-      serializedVersion: 2
-      x: 0
-      y: 0
-      width: 0
-      height: 0
-  - sprite: {fileID: 0}
-    hitbox:
-      serializedVersion: 2
-      x: 0
-      y: 0
-      width: 0
-      height: 0
-  - sprite: {fileID: 0}
-    hitbox:
-      serializedVersion: 2
-      x: 0
-      y: 0
-      width: 0
-      height: 0
-  - sprite: {fileID: 0}
-    hitbox:
-      serializedVersion: 2
-      x: 0
-      y: 0
-      width: 0
-      height: 0
-  - sprite: {fileID: 0}
-    hitbox:
-      serializedVersion: 2
-      x: 0
-      y: 0
-      width: 0
-      height: 0
+      x: 0.04437113
+      y: 1.387524
+      width: 1.569688
+      height: 2.422643
+    hitboxes: []
+    damage: 0
+    launchAngle: {x: 0, y: 0}
+    blockKnockback: 0
+    hitStun: 0
+    blockStun: 0
   loopable: 1

@@ -14,46 +14,88 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   animationType: 3
   spritesData:
-  - sprite: {fileID: 21300000, guid: 54b99d269f5901f4fac061fa09e3653e, type: 3}
-    hitbox:
+  - frame: 0
+    sprite: {fileID: 21300000, guid: 54b99d269f5901f4fac061fa09e3653e, type: 3}
+    hurtbox:
       serializedVersion: 2
       x: 0
       y: 0
       width: 0
       height: 0
-  - sprite: {fileID: 21300000, guid: e4e18afb2eacdb449bf2162d3e1918a8, type: 3}
-    hitbox:
+    hitboxes: []
+    damage: 0
+    launchAngle: {x: 0, y: 0}
+    blockKnockback: 0
+    hitStun: 0
+    blockStun: 0
+  - frame: 1
+    sprite: {fileID: 21300000, guid: e4e18afb2eacdb449bf2162d3e1918a8, type: 3}
+    hurtbox:
       serializedVersion: 2
       x: 0
       y: 0
       width: 0
       height: 0
-  - sprite: {fileID: 21300000, guid: e9fc854ca4e68a2438fe0255093874f7, type: 3}
-    hitbox:
+    hitboxes: []
+    damage: 0
+    launchAngle: {x: 0, y: 0}
+    blockKnockback: 0
+    hitStun: 0
+    blockStun: 0
+  - frame: 2
+    sprite: {fileID: 21300000, guid: e9fc854ca4e68a2438fe0255093874f7, type: 3}
+    hurtbox:
       serializedVersion: 2
       x: 0
       y: 0
       width: 0
       height: 0
-  - sprite: {fileID: 21300000, guid: b1ffd27352b2ab94898e63ec6e1715eb, type: 3}
-    hitbox:
+    hitboxes: []
+    damage: 0
+    launchAngle: {x: 0, y: 0}
+    blockKnockback: 0
+    hitStun: 0
+    blockStun: 0
+  - frame: 3
+    sprite: {fileID: 21300000, guid: b1ffd27352b2ab94898e63ec6e1715eb, type: 3}
+    hurtbox:
       serializedVersion: 2
       x: 0
       y: 0
       width: 0
       height: 0
-  - sprite: {fileID: 21300000, guid: b1ffd27352b2ab94898e63ec6e1715eb, type: 3}
-    hitbox:
+    hitboxes: []
+    damage: 0
+    launchAngle: {x: 0, y: 0}
+    blockKnockback: 0
+    hitStun: 0
+    blockStun: 0
+  - frame: 4
+    sprite: {fileID: 21300000, guid: b1ffd27352b2ab94898e63ec6e1715eb, type: 3}
+    hurtbox:
       serializedVersion: 2
       x: 0
       y: 0
       width: 0
       height: 0
-  - sprite: {fileID: 21300000, guid: 30261cf6327fe9e4f9d29e584419dc2f, type: 3}
-    hitbox:
+    hitboxes: []
+    damage: 0
+    launchAngle: {x: 0, y: 0}
+    blockKnockback: 0
+    hitStun: 0
+    blockStun: 0
+  - frame: 5
+    sprite: {fileID: 21300000, guid: 30261cf6327fe9e4f9d29e584419dc2f, type: 3}
+    hurtbox:
       serializedVersion: 2
       x: 0
       y: 0
       width: 0
       height: 0
+    hitboxes: []
+    damage: 0
+    launchAngle: {x: 0, y: 0}
+    blockKnockback: 0
+    hitStun: 0
+    blockStun: 0
   loopable: 0

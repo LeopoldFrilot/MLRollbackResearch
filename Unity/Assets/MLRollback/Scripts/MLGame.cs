@@ -20,8 +20,8 @@ public class MLGame : IGame, IMLSerializable {
         characters = new MLCharacter[Mathf.Min(numPlayers, MLConsts.MAX_PLAYERS)];
         for (int i = 0; i < characters.Length; i++) {
             characters[i] = new MLCharacter(i, GetStartingPosition(i), allAnimData);
-            IMLPhysicsObject PO = characters[i];
-            GM.physics.RegisterPhysicsObject(ref PO);
+            IMLCharacterPhysicsObject PO = characters[i];
+            GM.physics.RegisterCharacterObject(ref PO);
         }
     }
 

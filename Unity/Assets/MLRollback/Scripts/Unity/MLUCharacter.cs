@@ -1,4 +1,5 @@
 ﻿using SharedGame;
+using System;
 using System.Collections.Generic;
 using TMPro;
 using Unity.Mathematics.FixedPoint;
@@ -11,6 +12,7 @@ public class MLUCharacter : MonoBehaviour {
     [SerializeField] private Image imgProgress;
     [SerializeField] private Transform characterArt;
     [SerializeField] private SpriteRenderer bodyArt;
+    [SerializeField] private BoxCollider2D debugCollider;
     public List<MLUAnimationSO> animations;
     
     public void UpdateCharacter(MLCharacter character, PlayerConnectionInfo info) {
@@ -21,13 +23,21 @@ public class MLUCharacter : MonoBehaviour {
         UpdateConnectionInfo(info);
         foreach (MLUAnimationSO animationSO in animations) {
             if (animationSO.animationType == character.animManager.curAnimationType) {
-                Sprite sprite = animationSO.GetAnimationData(character.animManager.currentAnimationFrame).sprite;
+                var data = animationSO.GetAnimationData(character.animManager.currentAnimationFrame);
+                Sprite sprite = data.sprite;
                 if (sprite) {
                     bodyArt.sprite = sprite;
+                    debugCollider.offset = new Vector2(data.hurtbox.x, data.hurtbox.y);
+                    debugCollider.size = new Vector2(data.hurtbox.width, data.hurtbox.height);
                 }
                 break;
             }
         }
+        MLPhysics.Rect hurtBox = character.GetColliders()[0];
+        Debug.DrawLine(new Vector2((float)hurtBox.Left, (float)hurtBox.Top), new Vector2((float)hurtBox.Right, (float)hurtBox.Top), Color.blue, Time.deltaTime);
+        Debug.DrawLine(new Vector2((float)hurtBox.Right, (float)hurtBox.Top), new Vector2((float)hurtBox.Right, (float)hurtBox.Bottom), Color.blue, Time.deltaTime);
+        Debug.DrawLine(new Vector2((float)hurtBox.Right, (float)hurtBox.Bottom), new Vector2((float)hurtBox.Left, (float)hurtBox.Bottom), Color.blue, Time.deltaTime);
+        Debug.DrawLine(new Vector2((float)hurtBox.Left, (float)hurtBox.Bottom), new Vector2((float)hurtBox.Left, (float)hurtBox.Top), Color.blue, Time.deltaTime);
     }
 
     private void UpdatePosition(fp2 newPosition) {
@@ -81,5 +91,4 @@ public class MLUCharacter : MonoBehaviour {
             statusTextBox.gameObject.SetActive(false);
         }
     }
-
 }

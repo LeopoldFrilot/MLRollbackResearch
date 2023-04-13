@@ -14,172 +14,74 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   animationType: 1
   spritesData:
-  - sprite: {fileID: 21300000, guid: 5e028cc794565f54ebc3fb40c0ccf764, type: 3}
-    hitbox:
+  - frame: 0
+    sprite: {fileID: 21300000, guid: 5e028cc794565f54ebc3fb40c0ccf764, type: 3}
+    hurtbox:
       serializedVersion: 2
-      x: 0
-      y: 0
-      width: 0
-      height: 0
-  - sprite: {fileID: 0}
-    hitbox:
+      x: 0.04437113
+      y: 1.387524
+      width: 1.569688
+      height: 2.422643
+    hitboxes: []
+    damage: 0
+    launchAngle: {x: 0, y: 0}
+    blockKnockback: 0
+    hitStun: 0
+    blockStun: 0
+  - frame: 6
+    sprite: {fileID: 21300000, guid: 9e91e784d3bb5ae47bf8559160c6c4e9, type: 3}
+    hurtbox:
       serializedVersion: 2
-      x: 0
-      y: 0
-      width: 0
-      height: 0
-  - sprite: {fileID: 0}
-    hitbox:
+      x: 0.04437113
+      y: 1.387524
+      width: 1.569688
+      height: 2.422643
+    hitboxes: []
+    damage: 0
+    launchAngle: {x: 0, y: 0}
+    blockKnockback: 0
+    hitStun: 0
+    blockStun: 0
+  - frame: 12
+    sprite: {fileID: 21300000, guid: 12b0ff02e8ee487468662b9795919f23, type: 3}
+    hurtbox:
       serializedVersion: 2
-      x: 0
-      y: 0
-      width: 0
-      height: 0
-  - sprite: {fileID: 0}
-    hitbox:
+      x: 0.04437113
+      y: 1.387524
+      width: 1.569688
+      height: 2.422643
+    hitboxes: []
+    damage: 0
+    launchAngle: {x: 0, y: 0}
+    blockKnockback: 0
+    hitStun: 0
+    blockStun: 0
+  - frame: 18
+    sprite: {fileID: 21300000, guid: 984ffcac5ab4e4c4e9e260eb4bc5b389, type: 3}
+    hurtbox:
       serializedVersion: 2
-      x: 0
-      y: 0
-      width: 0
-      height: 0
-  - sprite: {fileID: 0}
-    hitbox:
+      x: 0.04437113
+      y: 1.387524
+      width: 1.569688
+      height: 2.422643
+    hitboxes: []
+    damage: 0
+    launchAngle: {x: 0, y: 0}
+    blockKnockback: 0
+    hitStun: 0
+    blockStun: 0
+  - frame: 23
+    sprite: {fileID: 21300000, guid: 984ffcac5ab4e4c4e9e260eb4bc5b389, type: 3}
+    hurtbox:
       serializedVersion: 2
-      x: 0
-      y: 0
-      width: 0
-      height: 0
-  - sprite: {fileID: 0}
-    hitbox:
-      serializedVersion: 2
-      x: 0
-      y: 0
-      width: 0
-      height: 0
-  - sprite: {fileID: 21300000, guid: 9e91e784d3bb5ae47bf8559160c6c4e9, type: 3}
-    hitbox:
-      serializedVersion: 2
-      x: 0
-      y: 0
-      width: 0
-      height: 0
-  - sprite: {fileID: 0}
-    hitbox:
-      serializedVersion: 2
-      x: 0
-      y: 0
-      width: 0
-      height: 0
-  - sprite: {fileID: 0}
-    hitbox:
-      serializedVersion: 2
-      x: 0
-      y: 0
-      width: 0
-      height: 0
-  - sprite: {fileID: 0}
-    hitbox:
-      serializedVersion: 2
-      x: 0
-      y: 0
-      width: 0
-      height: 0
-  - sprite: {fileID: 0}
-    hitbox:
-      serializedVersion: 2
-      x: 0
-      y: 0
-      width: 0
-      height: 0
-  - sprite: {fileID: 0}
-    hitbox:
-      serializedVersion: 2
-      x: 0
-      y: 0
-      width: 0
-      height: 0
-  - sprite: {fileID: 21300000, guid: 12b0ff02e8ee487468662b9795919f23, type: 3}
-    hitbox:
-      serializedVersion: 2
-      x: 0
-      y: 0
-      width: 0
-      height: 0
-  - sprite: {fileID: 0}
-    hitbox:
-      serializedVersion: 2
-      x: 0
-      y: 0
-      width: 0
-      height: 0
-  - sprite: {fileID: 0}
-    hitbox:
-      serializedVersion: 2
-      x: 0
-      y: 0
-      width: 0
-      height: 0
-  - sprite: {fileID: 0}
-    hitbox:
-      serializedVersion: 2
-      x: 0
-      y: 0
-      width: 0
-      height: 0
-  - sprite: {fileID: 0}
-    hitbox:
-      serializedVersion: 2
-      x: 0
-      y: 0
-      width: 0
-      height: 0
-  - sprite: {fileID: 0}
-    hitbox:
-      serializedVersion: 2
-      x: 0
-      y: 0
-      width: 0
-      height: 0
-  - sprite: {fileID: 21300000, guid: 984ffcac5ab4e4c4e9e260eb4bc5b389, type: 3}
-    hitbox:
-      serializedVersion: 2
-      x: 0
-      y: 0
-      width: 0
-      height: 0
-  - sprite: {fileID: 0}
-    hitbox:
-      serializedVersion: 2
-      x: 0
-      y: 0
-      width: 0
-      height: 0
-  - sprite: {fileID: 0}
-    hitbox:
-      serializedVersion: 2
-      x: 0
-      y: 0
-      width: 0
-      height: 0
-  - sprite: {fileID: 0}
-    hitbox:
-      serializedVersion: 2
-      x: 0
-      y: 0
-      width: 0
-      height: 0
-  - sprite: {fileID: 0}
-    hitbox:
-      serializedVersion: 2
-      x: 0
-      y: 0
-      width: 0
-      height: 0
-  - sprite: {fileID: 0}
-    hitbox:
-      serializedVersion: 2
-      x: 0
-      y: 0
-      width: 0
-      height: 0
+      x: -0.4383507
+      y: 1.387524
+      width: 1.518875
+      height: 2.422643
+    hitboxes: []
+    damage: 0
+    launchAngle: {x: 0, y: 0}
+    blockKnockback: 0
+    hitStun: 0
+    blockStun: 0
   loopable: 1

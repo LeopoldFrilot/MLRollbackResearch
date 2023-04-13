@@ -25,10 +25,15 @@ public struct MLAnimationFrameData {
 
     public MLAnimationFrameData(MLUAnimationSO.AnimationFrameData frameData) {
         Rect rect = frameData.hurtbox;
-        fp2 boxCenter = new fp2((fp)rect.center.x, (fp)rect.center.y);
+        fp2 boxCenter = new fp2((fp)rect.x, (fp)rect.y);
         this.hurtbox = new MLPhysics.Rect(boxCenter, (fp)rect.width, (fp)rect.height);
+
+        int length = 0;
+        if (frameData.hitboxes != null) {
+            length = frameData.hitboxes.Count;
+        }
         
-        hitboxes = new MLPhysics.Rect[frameData.hitboxes.Length];
+        hitboxes = new MLPhysics.Rect[length];
         for (int i = 0; i < hitboxes.Length; i++) {
             rect = frameData.hitboxes[i];
             boxCenter = new fp2((fp)rect.center.x, (fp)rect.center.y);
@@ -45,15 +50,15 @@ public struct MLAnimationFrameData {
 
 public struct MLAnimationData {
     public AnimationTypes animationType;
-    public int frames;
+    public int frameLength;
     public bool loopable;
     public MLAnimationFrameData[] frameData;
 
     public MLAnimationData(MLUAnimationSO animationData) {
         animationType = animationData.animationType;
-        frames = animationData.spritesData.Count;
+        frameLength = animationData.GetLength();
         loopable = animationData.loopable;
-        frameData = new MLAnimationFrameData[animationData.spritesData.Count];
+        frameData = new MLAnimationFrameData[frameLength];
         for (int i = 0; i < frameData.Length; i++) {
             var newFrame = new MLAnimationFrameData(animationData.GetAnimationData(i));
             frameData[i] = newFrame;
@@ -74,7 +79,7 @@ public class MLAnimationManager : IMLSerializable {
         this.animData = animData;
         currentAnimationFrame = 0;
         currentAnimationDataIndex = 0;
-        curAnimationType = AnimationTypes.Idle;
+        curAnimationType = AnimationTypes.Dead;
     }
 
     public void StartAnimation(AnimationTypes animationType) {
@@ -93,7 +98,7 @@ public class MLAnimationManager : IMLSerializable {
 
     public void ProgressAnimation() {
         currentAnimationFrame++;
-        if (currentAnimationFrame == animData[currentAnimationDataIndex].frames) {
+        if (currentAnimationFrame == animData[currentAnimationDataIndex].frameLength) {
             if (animData[currentAnimationDataIndex].loopable) {
                 currentAnimationFrame = 0;
             }
@@ -105,6 +110,10 @@ public class MLAnimationManager : IMLSerializable {
 
     public MLAnimationData GetCurrentAnimationData() {
         return animData[currentAnimationDataIndex];
+    }
+    
+    public MLAnimationFrameData GetCurrentAnimationFrameData() {
+        return animData[currentAnimationDataIndex].frameData[currentAnimationFrame];
     }
 
     public void Serialize(BinaryWriter bw) {

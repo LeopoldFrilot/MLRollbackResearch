@@ -6,44 +6,46 @@ using UnityEngine;
 public class MLUAnimationSO : ScriptableObject {
     [Serializable]
     public struct AnimationFrameData {
+        public int frame;
         public Sprite sprite;
         public Rect hurtbox;
-        public Rect[] hitboxes;
+        public List<Rect> hitboxes;
         public int damage;
         public Vector2 launchAngle;
         public float blockKnockback;
         public int hitStun;
         public int blockStun;
     }
-
-    public struct KeyFrame {
-        public AnimationFrameData data;
-        public int frame;
-    }
     
     public AnimationTypes animationType;
     public List<AnimationFrameData> spritesData;
     public bool loopable;
-    
-    private List<KeyFrame> keyFrames = new List<KeyFrame>();
 
-    private void OnValidate() {
-        keyFrames.Clear();
+    [ContextMenu("Sort by frame and clean up")]
+    private void Sort() {
+        spritesData.Sort(SortAnimationFrames);
+
+        List<AnimationFrameData> framesToRemove = new List<AnimationFrameData>();
         for (int i = 0; i < spritesData.Count; i++) {
-            if (spritesData[i].sprite != null) {
-                KeyFrame newKey = new KeyFrame();
-                newKey.data = spritesData[i];
-                newKey.frame = i;
-                keyFrames.Add(newKey);
+            if (i != 0 && spritesData[i].frame == 0) {
+                framesToRemove.Add(spritesData[i]);
             }
         }
+
+        foreach (var frame in framesToRemove) {
+            spritesData.Remove(frame);
+        }
+    }
+
+    private int SortAnimationFrames(AnimationFrameData x, AnimationFrameData y) {
+        return x.frame - y.frame;
     }
 
     public AnimationFrameData GetAnimationData(int frameIndex) {
         if (loopable) {
-            frameIndex %= (spritesData.Count);
+            frameIndex %= (GetLength());
         }
-        if (frameIndex < spritesData.Count) {
+        if (frameIndex < GetLength()) {
             return GetKeyFrame(frameIndex);
         }
         
@@ -52,9 +54,8 @@ public class MLUAnimationSO : ScriptableObject {
     }
 
     private AnimationFrameData GetKeyFrame(int frameIndex) {
-        KeyFrame currentKeyFrame = new KeyFrame();
-        
-        foreach (KeyFrame keyFrame in keyFrames) {
+        AnimationFrameData currentKeyFrame = new AnimationFrameData();
+        foreach (AnimationFrameData keyFrame in spritesData) {
             if (keyFrame.frame <= frameIndex) {
                 currentKeyFrame = keyFrame;
             }
@@ -63,6 +64,14 @@ public class MLUAnimationSO : ScriptableObject {
             }
         }
         
-        return currentKeyFrame.data;
+        return currentKeyFrame;
+    }
+
+    public int GetLength() {
+        if (spritesData.Count > 0) {
+            return spritesData[^1].frame + 1;
+        }
+        
+        return 0;
     }
 }

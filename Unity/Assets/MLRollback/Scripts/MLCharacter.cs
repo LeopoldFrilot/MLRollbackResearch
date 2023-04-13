@@ -1,12 +1,12 @@
 ﻿using SharedGame;
 using System;
 using System.IO;
-using Rect = MLPhysics.Rect;
 using Unity.Mathematics;
 using Unity.Mathematics.FixedPoint;
+using UnityEngine;
 
 [Serializable]
-public class MLCharacter : IMLSerializable, IMLPhysicsObject {
+public class MLCharacter : IMLSerializable, IMLCharacterPhysicsObject {
     public PhysicsObject physicsObject;
     public bool facingRight;
     public MLLag lag;
@@ -21,6 +21,7 @@ public class MLCharacter : IMLSerializable, IMLPhysicsObject {
         this.playerIndex = playerIndex;
         physicsObject = new PhysicsObject(startingPosition);
         animManager = new MLAnimationManager(animData);
+        animManager.StartAnimation(AnimationTypes.Idle);
         lag = new MLLag();
         GM = GameManager.Instance as MLGameManager;
         physicsObject.OnGrounded += OnGrounded;
@@ -72,25 +73,50 @@ public class MLCharacter : IMLSerializable, IMLPhysicsObject {
                 case MLInput.Buttons.Light:
                     if (lag.GetLagType(frameNumber) == LagTypes.None && grounded) {
                         animManager.StartAnimation(AnimationTypes.Light);
-                        lag.ApplyLag(LagTypes.Attack, frameNumber, animManager.GetCurrentAnimationData().frames);
+                        lag.ApplyLag(LagTypes.Attack, frameNumber, animManager.GetCurrentAnimationData().frameLength);
                     }
                     break;
                 case MLInput.Buttons.Medium:
                     if (lag.GetLagType(frameNumber) == LagTypes.None && grounded) {
                         animManager.StartAnimation(AnimationTypes.Medium);
-                        lag.ApplyLag(LagTypes.Attack, frameNumber, animManager.GetCurrentAnimationData().frames);
+                        lag.ApplyLag(LagTypes.Attack, frameNumber, animManager.GetCurrentAnimationData().frameLength);
                     }
                     break;
                 case MLInput.Buttons.Heavy:
                     if (lag.GetLagType(frameNumber) == LagTypes.None && grounded) {
                         animManager.StartAnimation(AnimationTypes.Heavy);
-                        lag.ApplyLag(LagTypes.Attack, frameNumber, animManager.GetCurrentAnimationData().frames);
+                        lag.ApplyLag(LagTypes.Attack, frameNumber, animManager.GetCurrentAnimationData().frameLength);
                     }
                     break;
-                
             }
         }
+        
         GM.physics.ProcessPhysicsFromInput(ref physicsObject, movementTracking, dash);
+    }
+
+    public ref PhysicsObject GetPhysicsObject() {
+        return ref physicsObject;
+    }
+
+    public MLPhysics.Rect[] GetColliders() {
+        MLPhysics.Rect hurtbox = facingRight ? animManager.GetCurrentAnimationFrameData().hurtbox : animManager.GetCurrentAnimationFrameData().hurtbox.FlippedRect;
+        MLPhysics.Rect collider = new MLPhysics.Rect(physicsObject.curPosition + hurtbox.Center, hurtbox.Width, hurtbox.Height);
+        return new []{collider};
+    }
+
+    public MLPhysics.Rect[] GetTriggers() {
+        MLPhysics.Rect[] adjustedTriggers = new MLPhysics.Rect[animManager.GetCurrentAnimationFrameData().hitboxes.Length];
+        for (int i = 0; i < animManager.GetCurrentAnimationFrameData().hitboxes.Length; i++) {
+            var hitbox = animManager.GetCurrentAnimationFrameData().hitboxes[i];
+            MLPhysics.Rect box = facingRight ? hitbox : hitbox.FlippedRect;
+            MLPhysics.Rect trigger = new MLPhysics.Rect(physicsObject.curPosition + box.Center, box.Width, box.Height);
+            adjustedTriggers[i] = trigger;
+        }
+        return adjustedTriggers;
+    }
+
+    public MLCharacter GetCharacter() {
+        return this;
     }
 
     public void HandleDisconnectedFrame() {
@@ -118,9 +144,5 @@ public class MLCharacter : IMLSerializable, IMLPhysicsObject {
         hashCode = hashCode * -1521134295 + lag.GetHashCode();
         hashCode = hashCode * -1521134295 + animManager.GetHashCode();
         return hashCode;
-    }
-
-    public ref PhysicsObject GetPhysicsObject() {
-        return ref physicsObject;
     }
 }

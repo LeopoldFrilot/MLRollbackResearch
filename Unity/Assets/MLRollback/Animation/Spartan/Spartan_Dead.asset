@@ -13,6 +13,19 @@ MonoBehaviour:
   m_Name: Spartan_Dead
   m_EditorClassIdentifier: 
   animationType: 7
-  sprites:
-  - {fileID: 21300000, guid: 19176ff6a717cf645972f50a400044bc, type: 3}
+  spritesData:
+  - frame: 0
+    sprite: {fileID: 21300000, guid: 19176ff6a717cf645972f50a400044bc, type: 3}
+    hurtbox:
+      serializedVersion: 2
+      x: 0
+      y: 0
+      width: 0
+      height: 0
+    hitboxes: []
+    damage: 0
+    launchAngle: {x: 0, y: 0}
+    blockKnockback: 0
+    hitStun: 0
+    blockStun: 0
   loopable: 1

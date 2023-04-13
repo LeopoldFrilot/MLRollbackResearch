@@ -14,7 +14,7 @@ public class MLUGameManager : MonoBehaviour {
         }
     }
 
-    public void UpdateGame(IGameRunner runner) {
+    private void UpdateGame(IGameRunner runner) {
         MLGame gameState = runner.Game as MLGame;
         if (gameState == null) {
             return;
