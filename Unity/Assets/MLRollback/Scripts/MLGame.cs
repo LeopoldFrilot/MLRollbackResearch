@@ -25,9 +25,19 @@ public class MLGame : IGame, IMLSerializable {
         }
     }
 
+    // Order should be: Physics->Animation->InputProcessing->GameLogic
     public void Update(long[] inputs, int disconnectFlags) {
         FrameNumber++;
-        // Input Usage
+        
+        // Physics
+        GM.physics.UpdatePhysics(FrameNumber);
+        
+        // Animation
+        foreach (var character in characters) {
+            UpdateAnimation(character);
+        }
+
+        // InputProcessing/GameLogic
         for (int i = 0; i < characters.Length; i++) {
             MLInput.FrameButtons frameButtons = new MLInput.FrameButtons();
             if ((disconnectFlags & (1 << i)) != 0) {
@@ -41,45 +51,32 @@ public class MLGame : IGame, IMLSerializable {
             }
             characters[i].UseInput(frameButtons, FrameNumber);
         }
-        GM.physics.UpdatePhysics(FrameNumber);
-
-        PostInputUpdate();
     }
 
-    private void PostInputUpdate() {
-        if (characters.Length > 1) {
-            if (GM.physics.IsGrounded(characters[0].physicsObject.curPosition)) {
-            }
-            if (GM.physics.IsGrounded(characters[1].physicsObject.curPosition)) {
-                characters[1].facingRight = characters[1].physicsObject.curPosition.x <= characters[0].physicsObject.curPosition.x;
-            }
+    private void UpdateAnimation(MLCharacter character) {
+        if (character.playerIndex == 0 && characters.Length > 1) {
+            character.facingRight = character.physicsObject.curPosition.x <= characters[1].physicsObject.curPosition.x;
         }
-
-        foreach (MLCharacter character in characters) {
-            if (character.playerIndex == 0 && characters.Length > 1) {
-                character.facingRight = character.physicsObject.curPosition.x <= characters[1].physicsObject.curPosition.x;
-            }
-            else if (character.playerIndex == 1) {
-                character.facingRight = !characters[0].facingRight;
-            }
+        else if (character.playerIndex == 1) {
+            character.facingRight = !characters[0].facingRight;
+        }
             
-            MLAnimationManager anim = character.animManager;
-            if (anim.curAnimationType == AnimationTypes.Idle && !GM.physics.IsGrounded(character.physicsObject.curPosition)) {
-                anim.StartAnimation(AnimationTypes.Airborne);
-            }
-            else if (anim.curAnimationType == AnimationTypes.Idle && character.physicsObject.velocity.x != 0) {
-                anim.StartAnimation(AnimationTypes.Run);
-            } 
-            else if (anim.curAnimationType == AnimationTypes.Airborne && GM.physics.IsGrounded(character.physicsObject.curPosition)) {
-                anim.StartAnimation(AnimationTypes.Idle);
-            }
-            else if (anim.curAnimationType == AnimationTypes.Run && character.physicsObject.velocity.x == 0) {
-                anim.StartAnimation(AnimationTypes.Idle);
-            }
-            else {
-                anim.ProgressAnimation();
-            }
+        MLAnimationManager anim = character.animManager;
+        if (anim.curAnimationType == AnimationTypes.Idle && !GM.physics.IsGrounded(character.physicsObject.curPosition)) {
+            anim.StartAnimation(AnimationTypes.Airborne);
         }
+        else if (anim.curAnimationType == AnimationTypes.Idle && character.physicsObject.velocity.x != 0) {
+            anim.StartAnimation(AnimationTypes.Run);
+        } 
+        else if (anim.curAnimationType == AnimationTypes.Airborne && GM.physics.IsGrounded(character.physicsObject.curPosition)) {
+            anim.StartAnimation(AnimationTypes.Idle);
+        }
+        else if (anim.curAnimationType == AnimationTypes.Run && character.physicsObject.velocity.x == 0) {
+            anim.StartAnimation(AnimationTypes.Idle);
+        }
+        else {
+            anim.ProgressAnimation();
+        }  
     }
 
     #region DONE_FOR_NOW

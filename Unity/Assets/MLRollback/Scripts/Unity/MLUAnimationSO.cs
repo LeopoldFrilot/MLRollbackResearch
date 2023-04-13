@@ -7,7 +7,8 @@ public class MLUAnimationSO : ScriptableObject {
     [Serializable]
     public struct AnimationFrameData {
         public Sprite sprite;
-        public Rect hitbox;
+        public Rect hurtbox;
+        public Rect[] hitboxes;
         public int damage;
         public Vector2 launchAngle;
         public float blockKnockback;
