@@ -154,19 +154,20 @@ public class MLPhysics {
     }
 
     private bool MovePhysicsObject(IMLPhysicsObject po) {
-        activeColliders.Clear();
+        /*activeColliders.Clear();
         foreach (var character in registeredCharacterObjects) {
             if (character != po) {
                 foreach (Rect collider in character.GetColliders()) {
                     activeColliders.Add(collider);
                 }
             }
-        }
+        }*/
 
         fp2 prevPosition = po.GetPhysicsObject().curPosition;
         ClampedMove(po, prevPosition.x + po.GetPhysicsObject().velocity.x, prevPosition.y + po.GetPhysicsObject().velocity.y);
-
+        
         bool cleanMove = true;
+/*
         foreach (Rect collider in po.GetColliders()) {
             foreach (Rect activeCollider in activeColliders) {
                 fp2 overlap = collider.GetOverlap(activeCollider);
@@ -178,6 +179,7 @@ public class MLPhysics {
                 }
             }
         }
+        */
         return cleanMove;
     }
 
