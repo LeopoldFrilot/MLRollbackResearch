@@ -62,20 +62,22 @@ public class MLGame : IGame, IMLSerializable {
         }
             
         MLAnimationManager anim = character.animManager;
-        if (anim.curAnimationType == AnimationTypes.Idle && !GM.physics.IsGrounded(character.physicsObject.curPosition)) {
-            anim.StartAnimation(AnimationTypes.Airborne);
+        bool grounded = GM.physics.IsGrounded(character.physicsObject.curPosition);
+        fp xVelocity = character.physicsObject.velocity.x;
+        if (anim.curAnimationType == AnimationTypes.Idle && !grounded) {
+            anim.StartAnimation(AnimationTypes.Airborne, grounded);
         }
-        else if (anim.curAnimationType == AnimationTypes.Idle && character.physicsObject.velocity.x != 0) {
-            anim.StartAnimation(AnimationTypes.Run);
+        else if (anim.curAnimationType == AnimationTypes.Idle && xVelocity != 0) {
+            anim.StartAnimation(AnimationTypes.Run, grounded);
         } 
-        else if (anim.curAnimationType == AnimationTypes.Airborne && GM.physics.IsGrounded(character.physicsObject.curPosition)) {
-            anim.StartAnimation(AnimationTypes.Idle);
+        else if (anim.curAnimationType == AnimationTypes.Airborne && grounded) {
+            anim.StartAnimation(AnimationTypes.Idle, grounded);
         }
-        else if (anim.curAnimationType == AnimationTypes.Run && character.physicsObject.velocity.x == 0) {
-            anim.StartAnimation(AnimationTypes.Idle);
+        else if (anim.curAnimationType == AnimationTypes.Run && xVelocity == 0) {
+            anim.StartAnimation(AnimationTypes.Idle, grounded);
         }
         else {
-            anim.ProgressAnimation();
+            anim.ProgressAnimation(grounded);
         }  
     }
 

@@ -3,7 +3,6 @@ using System;
 using System.IO;
 using Unity.Mathematics;
 using Unity.Mathematics.FixedPoint;
-using UnityEngine;
 
 [Serializable]
 public class MLCharacter : IMLSerializable, IMLCharacterPhysicsObject {
@@ -21,7 +20,7 @@ public class MLCharacter : IMLSerializable, IMLCharacterPhysicsObject {
         this.playerIndex = playerIndex;
         physicsObject = new PhysicsObject(startingPosition);
         animManager = new MLAnimationManager(animData);
-        animManager.StartAnimation(AnimationTypes.Idle);
+        animManager.StartAnimation(AnimationTypes.Idle, true);
         lag = new MLLag();
         GM = GameManager.Instance as MLGameManager;
         physicsObject.OnGrounded += OnGrounded;
@@ -29,12 +28,14 @@ public class MLCharacter : IMLSerializable, IMLCharacterPhysicsObject {
     }
 
     private void OnAerial(int frameNumber) {
-        animManager.StartAnimation(AnimationTypes.Airborne);
+        animManager.StartAnimation(AnimationTypes.Jump, false);
     }
 
     private void OnGrounded(int frameNumber) {
-        lag.ApplyLag(LagTypes.LandingLag, frameNumber);
-        animManager.StartAnimation(AnimationTypes.Idle);
+        if (lag.GetLagType(frameNumber) != LagTypes.Hit) {
+            lag.ApplyLag(LagTypes.LandingLag, frameNumber);
+            animManager.StartAnimation(AnimationTypes.Idle, true);
+        }
     }
 
     public void UseInput(MLInput.FrameButtons frameButtons, int frameNumber) {
@@ -66,25 +67,25 @@ public class MLCharacter : IMLSerializable, IMLCharacterPhysicsObject {
                 case MLInput.Buttons.Dash:
                     if (lag.GetLagType(frameNumber) == LagTypes.None) {
                         dash = true;
-                        animManager.StartAnimation(AnimationTypes.Dash);
+                        animManager.StartAnimation(AnimationTypes.Dash, grounded);
                         lag.ApplyLag(LagTypes.Dash, frameNumber);
                     }
                     break;
                 case MLInput.Buttons.Light:
                     if (lag.GetLagType(frameNumber) == LagTypes.None && grounded) {
-                        animManager.StartAnimation(AnimationTypes.Light);
+                        animManager.StartAnimation(AnimationTypes.Light, grounded);
                         lag.ApplyLag(LagTypes.Attack, frameNumber, animManager.GetCurrentAnimationData().frameLength);
                     }
                     break;
                 case MLInput.Buttons.Medium:
                     if (lag.GetLagType(frameNumber) == LagTypes.None && grounded) {
-                        animManager.StartAnimation(AnimationTypes.Medium);
+                        animManager.StartAnimation(AnimationTypes.Medium, grounded);
                         lag.ApplyLag(LagTypes.Attack, frameNumber, animManager.GetCurrentAnimationData().frameLength);
                     }
                     break;
                 case MLInput.Buttons.Heavy:
                     if (lag.GetLagType(frameNumber) == LagTypes.None && grounded) {
-                        animManager.StartAnimation(AnimationTypes.Heavy);
+                        animManager.StartAnimation(AnimationTypes.Heavy, grounded);
                         lag.ApplyLag(LagTypes.Attack, frameNumber, animManager.GetCurrentAnimationData().frameLength);
                     }
                     break;
@@ -98,13 +99,13 @@ public class MLCharacter : IMLSerializable, IMLCharacterPhysicsObject {
         return ref physicsObject;
     }
 
-    public MLPhysics.Rect[] GetColliders() {
+    public MLPhysics.Rect[] GetHurtBoxes() {
         MLPhysics.Rect hurtbox = facingRight ? animManager.GetCurrentAnimationFrameData().hurtbox : animManager.GetCurrentAnimationFrameData().hurtbox.FlippedRect;
         MLPhysics.Rect collider = new MLPhysics.Rect(physicsObject.curPosition + hurtbox.Center, hurtbox.Width, hurtbox.Height);
         return new []{collider};
     }
 
-    public MLPhysics.Rect[] GetTriggers() {
+    public MLPhysics.Rect[] GetHitboxes() {
         MLPhysics.Rect[] adjustedTriggers = new MLPhysics.Rect[animManager.GetCurrentAnimationFrameData().hitboxes.Length];
         for (int i = 0; i < animManager.GetCurrentAnimationFrameData().hitboxes.Length; i++) {
             var hitbox = animManager.GetCurrentAnimationFrameData().hitboxes[i];
@@ -117,6 +118,22 @@ public class MLCharacter : IMLSerializable, IMLCharacterPhysicsObject {
 
     public MLCharacter GetCharacter() {
         return this;
+    }
+
+    public bool CanUseHitboxes() {
+        return !animManager.currentAnimationCombatUsed;
+    }
+
+    public void UseHitboxesOn(IMLCharacterPhysicsObject character, int frameNumber) {
+        animManager.currentAnimationCombatUsed = true;
+        MLAnimationFrameData data = animManager.GetCurrentAnimationFrameData();
+        character.GetCharacter().GetHit(data, frameNumber);
+    }
+
+    private void GetHit(MLAnimationFrameData data, int frameNumber) {
+        physicsObject.Launch(facingRight ? data.normalLaunchAngle : new fp2(-1 * data.normalLaunchAngle.x, data.normalLaunchAngle.y));
+        lag.ApplyLag(LagTypes.Hit, frameNumber, data.hitStun);
+        animManager.StartAnimation(AnimationTypes.Hit, GM.physics.IsGrounded(physicsObject.curPosition));
     }
 
     public void HandleDisconnectedFrame() {

@@ -1,4 +1,5 @@
-﻿using System.IO;
+﻿using System;
+using System.IO;
 
 public enum LagTypes {
     None,
@@ -13,19 +14,34 @@ public class MLLag : IMLSerializable {
     private LagTypes currentLagType;
     private int frameLagFinishes;
 
+    public Action<LagTypes> OnLagStarted;
+    public void TriggerLagStarted(LagTypes LagType) {
+        OnLagStarted?.Invoke(LagType);
+    }
+
+    public Action<LagTypes> OnLagEnded;
+    public void TriggerLagEnded(LagTypes LagType) {
+        OnLagEnded?.Invoke(LagType);
+    }
+    
     public MLLag() {
         currentLagType = LagTypes.None;
     }
 
-    public void ApplyLag(LagTypes lagType, int currentFrame, int lagLengthOverride = -1) {
-        currentLagType = lagType;
-        frameLagFinishes = lagLengthOverride >= 0 ? currentFrame + lagLengthOverride : MLConsts.GetLagAmount(lagType) + currentFrame;
+    public void UpdateLag(int currentFrame) {
+        if (currentLagType != LagTypes.None && currentFrame > frameLagFinishes) {
+            ApplyLag(LagTypes.None, currentFrame, 0);
+        }
     }
 
-    public LagTypes GetLagType(int currentFrame) {
-        if (currentFrame > frameLagFinishes) {
-            return LagTypes.None;
-        }
+    public void ApplyLag(LagTypes lagType, int currentFrame, int lagLengthOverride = -1) {
+        TriggerLagEnded(currentLagType);
+        currentLagType = lagType;
+        frameLagFinishes = lagLengthOverride >= 0 ? currentFrame + lagLengthOverride : MLConsts.GetLagAmount(lagType) + currentFrame;
+        TriggerLagStarted(currentLagType);
+    }
+
+    public LagTypes GetLagType() {
         return currentLagType;
     }
     

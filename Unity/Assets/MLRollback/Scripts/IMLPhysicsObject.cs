@@ -1,7 +1,7 @@
 ﻿public interface IMLPhysicsObject {
     public ref PhysicsObject GetPhysicsObject();
 
-    public MLPhysics.Rect[] GetColliders();
+    public MLPhysics.Rect[] GetHurtBoxes();
 
-    public MLPhysics.Rect[] GetTriggers();
+    public MLPhysics.Rect[] GetHitboxes();
 }

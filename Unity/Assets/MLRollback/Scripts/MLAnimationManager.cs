@@ -11,7 +11,8 @@ public enum AnimationTypes {
     Medium,
     Heavy,
     Dead,
-    Airborne
+    Airborne,
+    Hit
 }
 
 public struct MLAnimationFrameData {
@@ -71,6 +72,7 @@ public class MLAnimationManager : IMLSerializable {
     public AnimationTypes curAnimationType; 
     
     private int currentAnimationDataIndex;
+    public bool currentAnimationCombatUsed;
     
     // Not rolled back
     private MLAnimationData[] animData;
@@ -80,30 +82,32 @@ public class MLAnimationManager : IMLSerializable {
         currentAnimationFrame = 0;
         currentAnimationDataIndex = 0;
         curAnimationType = AnimationTypes.Dead;
+        currentAnimationCombatUsed = false;
     }
 
-    public void StartAnimation(AnimationTypes animationType) {
+    public void StartAnimation(AnimationTypes animationType, bool grounded) {
         if (curAnimationType != animationType) {
             curAnimationType = animationType;
             currentAnimationFrame = -1;
             for (int i = 0; i < animData.Length; i++) {
                 if (animData[i].animationType == animationType) {
                     currentAnimationDataIndex = i;
-                    ProgressAnimation();
+                    currentAnimationCombatUsed = false;
+                    ProgressAnimation(grounded);
                     break;
                 }
             }
         }
     }
 
-    public void ProgressAnimation() {
+    public void ProgressAnimation(bool grounded) {
         currentAnimationFrame++;
         if (currentAnimationFrame == animData[currentAnimationDataIndex].frameLength) {
             if (animData[currentAnimationDataIndex].loopable) {
                 currentAnimationFrame = 0;
             }
             else {
-                StartAnimation(AnimationTypes.Idle);
+                StartAnimation(grounded ? AnimationTypes.Idle : AnimationTypes.Airborne, grounded);
             }
         }
     }
@@ -120,18 +124,22 @@ public class MLAnimationManager : IMLSerializable {
         bw.Write(currentAnimationFrame);
         bw.Write((int)curAnimationType);
         bw.Write(currentAnimationDataIndex);
+        bw.Write(currentAnimationCombatUsed);
     }
 
     public void Deserialize(BinaryReader br) {
         currentAnimationFrame = br.ReadInt32();
         curAnimationType = (AnimationTypes)br.ReadInt32();
         currentAnimationDataIndex = br.ReadInt32();
+        currentAnimationCombatUsed = br.ReadBoolean();
     }
 
     public override int GetHashCode() {
         int hashcode = 1024118323;
         hashcode = hashcode * -1485059183 + currentAnimationFrame.GetHashCode();
         hashcode = hashcode * -1485059183 + curAnimationType.GetHashCode();
+        hashcode = hashcode * -1485059183 + currentAnimationDataIndex.GetHashCode();
+        hashcode = hashcode * -1485059183 + currentAnimationCombatUsed.GetHashCode();
         return hashcode;
     }
 }

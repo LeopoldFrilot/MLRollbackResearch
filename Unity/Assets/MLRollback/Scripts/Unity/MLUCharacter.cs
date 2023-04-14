@@ -33,7 +33,7 @@ public class MLUCharacter : MonoBehaviour {
                 break;
             }
         }
-        MLPhysics.Rect hurtBox = character.GetColliders()[0];
+        MLPhysics.Rect hurtBox = character.GetHurtBoxes()[0];
         Debug.DrawLine(new Vector2((float)hurtBox.Left, (float)hurtBox.Top), new Vector2((float)hurtBox.Right, (float)hurtBox.Top), Color.blue, Time.deltaTime);
         Debug.DrawLine(new Vector2((float)hurtBox.Right, (float)hurtBox.Top), new Vector2((float)hurtBox.Right, (float)hurtBox.Bottom), Color.blue, Time.deltaTime);
         Debug.DrawLine(new Vector2((float)hurtBox.Right, (float)hurtBox.Bottom), new Vector2((float)hurtBox.Left, (float)hurtBox.Bottom), Color.blue, Time.deltaTime);
