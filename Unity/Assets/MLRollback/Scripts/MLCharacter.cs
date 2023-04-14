@@ -30,7 +30,9 @@ public class MLCharacter : IMLSerializable, IMLCharacterPhysicsObject {
     }
 
     private void OnAerial(int frameNumber) {
-        animManager.StartAnimation(AnimationTypes.Jump, false);
+        if (lag.GetLagType() != LagTypes.Hit) {
+            animManager.StartAnimation(AnimationTypes.Jump, false);
+        }
     }
 
     private void OnGrounded(int frameNumber) {
