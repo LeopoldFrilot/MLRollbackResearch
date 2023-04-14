@@ -34,16 +34,24 @@ public class MLUCharacter : MonoBehaviour {
             }
         }
         MLPhysics.Rect hurtBox = character.GetHurtBoxes()[0];
-        Debug.DrawLine(new Vector2((float)hurtBox.Left, (float)hurtBox.Top), new Vector2((float)hurtBox.Right, (float)hurtBox.Top), Color.blue, Time.deltaTime);
-        Debug.DrawLine(new Vector2((float)hurtBox.Right, (float)hurtBox.Top), new Vector2((float)hurtBox.Right, (float)hurtBox.Bottom), Color.blue, Time.deltaTime);
-        Debug.DrawLine(new Vector2((float)hurtBox.Right, (float)hurtBox.Bottom), new Vector2((float)hurtBox.Left, (float)hurtBox.Bottom), Color.blue, Time.deltaTime);
-        Debug.DrawLine(new Vector2((float)hurtBox.Left, (float)hurtBox.Bottom), new Vector2((float)hurtBox.Left, (float)hurtBox.Top), Color.blue, Time.deltaTime);
+        DrawRect(hurtBox, Color.blue);
+        foreach (MLPhysics.Rect hitbox in character.GetHitboxes()) {
+            DrawRect(hitbox, Color.green);
+        }
     }
 
     private void UpdatePosition(fp2 newPosition) {
         float xPos = (float)newPosition.x;
         float yPos = (float)newPosition.y;
         transform.position = new Vector3(xPos, yPos, 0);
+    }
+
+    private void DrawRect(MLPhysics.Rect Rect, Color color) {
+        Debug.DrawLine(new Vector2((float)Rect.Left, (float)Rect.Top), new Vector2((float)Rect.Right, (float)Rect.Top), color, Time.deltaTime);
+        Debug.DrawLine(new Vector2((float)Rect.Right, (float)Rect.Top), new Vector2((float)Rect.Right, (float)Rect.Bottom), color, Time.deltaTime);
+        Debug.DrawLine(new Vector2((float)Rect.Right, (float)Rect.Bottom), new Vector2((float)Rect.Left, (float)Rect.Bottom), color, Time.deltaTime);
+        Debug.DrawLine(new Vector2((float)Rect.Left, (float)Rect.Bottom), new Vector2((float)Rect.Left, (float)Rect.Top), color, Time.deltaTime);
+
     }
 
     private void UpdateConnectionInfo(PlayerConnectionInfo info)

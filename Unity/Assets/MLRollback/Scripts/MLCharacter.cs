@@ -25,6 +25,8 @@ public class MLCharacter : IMLSerializable, IMLCharacterPhysicsObject {
         GM = GameManager.Instance as MLGameManager;
         physicsObject.OnGrounded += OnGrounded;
         physicsObject.OnAerial += OnAerial;
+        lag.OnLagStarted += OnLagStarted;
+        lag.OnLagEnded += OnLagEnded;
     }
 
     private void OnAerial(int frameNumber) {
@@ -32,9 +34,23 @@ public class MLCharacter : IMLSerializable, IMLCharacterPhysicsObject {
     }
 
     private void OnGrounded(int frameNumber) {
-        if (lag.GetLagType(frameNumber) != LagTypes.Hit) {
+        if (lag.GetLagType() != LagTypes.Hit) {
             lag.ApplyLag(LagTypes.LandingLag, frameNumber);
             animManager.StartAnimation(AnimationTypes.Idle, true);
+        }
+    }
+
+    private void OnLagStarted(LagTypes lagType) {
+        if (lagType == LagTypes.Hit) {
+            bool grounded = GM.physics.IsGrounded(physicsObject.curPosition);
+            animManager.StartAnimation(AnimationTypes.Hit, grounded);
+        }
+    }
+
+    private void OnLagEnded(LagTypes lagType) {
+        if (lagType == LagTypes.Hit) {
+            bool grounded = GM.physics.IsGrounded(physicsObject.curPosition);
+            animManager.ReturnToIdle(grounded);
         }
     }
 
@@ -45,46 +61,46 @@ public class MLCharacter : IMLSerializable, IMLCharacterPhysicsObject {
         foreach (var button in frameButtons.buttons) {
             switch (button) {
                 case MLInput.Buttons.Left:
-                    if (lag.GetLagType(frameNumber) is LagTypes.None or LagTypes.JumpStart) {
+                    if (lag.GetLagType() is LagTypes.None or LagTypes.JumpStart) {
                         movementTracking += new int2(-1, 0);
                     }
                     break;
                 case MLInput.Buttons.Right:
-                    if (lag.GetLagType(frameNumber) is LagTypes.None or LagTypes.JumpStart) {
+                    if (lag.GetLagType() is LagTypes.None or LagTypes.JumpStart) {
                         movementTracking += new int2(1, 0);
                     }
                     break;
                 case MLInput.Buttons.Up:
-                    if (lag.GetLagType(frameNumber) is LagTypes.None or LagTypes.JumpStart) {
+                    if (lag.GetLagType() is LagTypes.None or LagTypes.JumpStart) {
                         movementTracking += new int2(0, 1);
                     }
                     break;
                 case MLInput.Buttons.Down:
-                    if (lag.GetLagType(frameNumber) is LagTypes.None or LagTypes.JumpStart) {
+                    if (lag.GetLagType() is LagTypes.None or LagTypes.JumpStart) {
                         movementTracking += new int2(0, -1);
                     }
                     break;
                 case MLInput.Buttons.Dash:
-                    if (lag.GetLagType(frameNumber) == LagTypes.None) {
+                    if (lag.GetLagType() == LagTypes.None) {
                         dash = true;
                         animManager.StartAnimation(AnimationTypes.Dash, grounded);
                         lag.ApplyLag(LagTypes.Dash, frameNumber);
                     }
                     break;
                 case MLInput.Buttons.Light:
-                    if (lag.GetLagType(frameNumber) == LagTypes.None && grounded) {
+                    if (lag.GetLagType() == LagTypes.None && grounded) {
                         animManager.StartAnimation(AnimationTypes.Light, grounded);
                         lag.ApplyLag(LagTypes.Attack, frameNumber, animManager.GetCurrentAnimationData().frameLength);
                     }
                     break;
                 case MLInput.Buttons.Medium:
-                    if (lag.GetLagType(frameNumber) == LagTypes.None && grounded) {
+                    if (lag.GetLagType() == LagTypes.None && grounded) {
                         animManager.StartAnimation(AnimationTypes.Medium, grounded);
                         lag.ApplyLag(LagTypes.Attack, frameNumber, animManager.GetCurrentAnimationData().frameLength);
                     }
                     break;
                 case MLInput.Buttons.Heavy:
-                    if (lag.GetLagType(frameNumber) == LagTypes.None && grounded) {
+                    if (lag.GetLagType() == LagTypes.None && grounded) {
                         animManager.StartAnimation(AnimationTypes.Heavy, grounded);
                         lag.ApplyLag(LagTypes.Attack, frameNumber, animManager.GetCurrentAnimationData().frameLength);
                     }
@@ -127,13 +143,9 @@ public class MLCharacter : IMLSerializable, IMLCharacterPhysicsObject {
     public void UseHitboxesOn(IMLCharacterPhysicsObject character, int frameNumber) {
         animManager.currentAnimationCombatUsed = true;
         MLAnimationFrameData data = animManager.GetCurrentAnimationFrameData();
-        character.GetCharacter().GetHit(data, frameNumber);
-    }
-
-    private void GetHit(MLAnimationFrameData data, int frameNumber) {
-        physicsObject.Launch(facingRight ? data.normalLaunchAngle : new fp2(-1 * data.normalLaunchAngle.x, data.normalLaunchAngle.y));
-        lag.ApplyLag(LagTypes.Hit, frameNumber, data.hitStun);
-        animManager.StartAnimation(AnimationTypes.Hit, GM.physics.IsGrounded(physicsObject.curPosition));
+        MLCharacter hitCharacter = character.GetCharacter();
+        hitCharacter.physicsObject.Launch(facingRight ? data.normalLaunchAngle : new fp2(-1 * data.normalLaunchAngle.x, data.normalLaunchAngle.y));
+        hitCharacter.lag.ApplyLag(LagTypes.Hit, frameNumber, data.hitStun);
     }
 
     public void HandleDisconnectedFrame() {

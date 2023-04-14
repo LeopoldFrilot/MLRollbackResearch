@@ -45,7 +45,7 @@ MonoBehaviour:
     damage: 25
     launchAngle: {x: 1, y: -0.3}
     blockKnockback: 0.5
-    hitStun: 0
+    hitStun: 30
     blockStun: 0
   - frame: 13
     sprite: {fileID: 21300000, guid: 46206f73e66fe6e4aa79163c9a72496a, type: 3}

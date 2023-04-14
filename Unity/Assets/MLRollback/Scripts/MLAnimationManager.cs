@@ -37,7 +37,7 @@ public struct MLAnimationFrameData {
         hitboxes = new MLPhysics.Rect[length];
         for (int i = 0; i < hitboxes.Length; i++) {
             rect = frameData.hitboxes[i];
-            boxCenter = new fp2((fp)rect.center.x, (fp)rect.center.y);
+            boxCenter = new fp2((fp)rect.x, (fp)rect.y);
             hitboxes[i] = new MLPhysics.Rect(boxCenter, (fp)rect.width, (fp)rect.height);
         }
         
@@ -107,7 +107,7 @@ public class MLAnimationManager : IMLSerializable {
                 currentAnimationFrame = 0;
             }
             else {
-                StartAnimation(grounded ? AnimationTypes.Idle : AnimationTypes.Airborne, grounded);
+                ReturnToIdle(grounded);
             }
         }
     }
@@ -118,6 +118,10 @@ public class MLAnimationManager : IMLSerializable {
     
     public MLAnimationFrameData GetCurrentAnimationFrameData() {
         return animData[currentAnimationDataIndex].frameData[currentAnimationFrame];
+    }
+
+    public void ReturnToIdle(bool grounded) {
+        StartAnimation(grounded ? AnimationTypes.Idle : AnimationTypes.Airborne, grounded);
     }
 
     public void Serialize(BinaryWriter bw) {

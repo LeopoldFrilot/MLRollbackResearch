@@ -32,6 +32,7 @@ public class MLGame : IGame, IMLSerializable {
         // Physics
         GM.physics.UpdatePhysics(FrameNumber);
         
+        
         // Animation
         foreach (var character in characters) {
             UpdateAnimation(character);
@@ -50,6 +51,7 @@ public class MLGame : IGame, IMLSerializable {
                 }
             }
             characters[i].UseInput(frameButtons, FrameNumber);
+            characters[i].lag.UpdateLag(FrameNumber);
         }
     }
 
