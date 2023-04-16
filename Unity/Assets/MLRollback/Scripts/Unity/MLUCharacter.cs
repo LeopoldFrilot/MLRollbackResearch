@@ -14,7 +14,14 @@ public class MLUCharacter : MonoBehaviour {
     [SerializeField] private SpriteRenderer bodyArt;
     [SerializeField] private BoxCollider2D debugCollider;
     public List<MLUAnimationSO> animations;
-    
+
+    private float healthPercentage;
+    private MLUStatusBar statusBar;
+
+    private void Awake() {
+        statusBar = FindObjectOfType<MLUStatusBar>();
+    }
+
     public void UpdateCharacter(MLCharacter character, PlayerConnectionInfo info) {
         UpdatePosition(character.physicsObject.curPosition);
         Vector3 scale = characterArt.localScale;
@@ -37,6 +44,12 @@ public class MLUCharacter : MonoBehaviour {
         DrawRect(hurtBox, Color.blue);
         foreach (MLPhysics.Rect hitbox in character.GetHitboxes()) {
             DrawRect(hitbox, Color.green);
+        }
+
+        float newHealthPercentage = (float)character.GetHealthPercentage();
+        if (healthPercentage != newHealthPercentage) {
+            healthPercentage = newHealthPercentage;
+            statusBar.UpdateHealth(character.playerIndex, newHealthPercentage, character.name);
         }
     }
 

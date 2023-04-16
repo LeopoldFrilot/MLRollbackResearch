@@ -19,7 +19,7 @@ public class MLGame : IGame, IMLSerializable {
         GM = GameManager.Instance as MLGameManager;
         characters = new MLCharacter[Mathf.Min(numPlayers, MLConsts.MAX_PLAYERS)];
         for (int i = 0; i < characters.Length; i++) {
-            characters[i] = new MLCharacter(i, GetStartingPosition(i), allAnimData);
+            characters[i] = new MLCharacter(i, $"Player {i + 1}", GetStartingPosition(i), allAnimData);
             IMLCharacterPhysicsObject PO = characters[i];
             GM.physics.RegisterCharacterObject(ref PO);
         }
@@ -50,7 +50,10 @@ public class MLGame : IGame, IMLSerializable {
                     GGPORunner.LogGame($"Inputs frame {FrameNumber}, Player: {characters[i].playerIndex}: {debugString}");
                 }
             }
-            characters[i].UseInput(frameButtons, FrameNumber);
+            if (!characters[i].IsDead()) {
+                characters[i].UseInput(frameButtons, FrameNumber);
+            }
+            
             characters[i].lag.UpdateLag(FrameNumber);
         }
     }
@@ -66,6 +69,14 @@ public class MLGame : IGame, IMLSerializable {
         MLAnimationManager anim = character.animManager;
         bool grounded = GM.physics.IsGrounded(character.physicsObject.curPosition);
         fp xVelocity = character.physicsObject.velocity.x;
+        if (character.IsDead()) {
+            if (anim.curAnimationType != AnimationTypes.Dead) {
+                anim.StartAnimation(AnimationTypes.Dead, grounded);
+            }
+            else {
+                anim.ProgressAnimation(grounded);
+            }
+        }
         if (anim.curAnimationType == AnimationTypes.Idle && !grounded) {
             anim.StartAnimation(AnimationTypes.Airborne, grounded);
         }

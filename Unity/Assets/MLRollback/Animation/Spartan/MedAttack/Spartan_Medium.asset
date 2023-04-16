@@ -47,7 +47,7 @@ MonoBehaviour:
       y: 3.245995
       width: 2.308563
       height: 0.6823878
-    damage: 0
+    damage: 15
     launchAngle: {x: 0.05, y: 0.5}
     blockKnockback: 0
     hitStun: 50

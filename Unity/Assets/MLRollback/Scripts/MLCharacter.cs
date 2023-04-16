@@ -3,6 +3,7 @@ using System;
 using System.IO;
 using Unity.Mathematics;
 using Unity.Mathematics.FixedPoint;
+using UnityEngine;
 
 [Serializable]
 public class MLCharacter : IMLSerializable, IMLCharacterPhysicsObject {
@@ -10,13 +11,17 @@ public class MLCharacter : IMLSerializable, IMLCharacterPhysicsObject {
     public bool facingRight;
     public MLLag lag;
     public MLAnimationManager animManager;
+    public fp currentHealth;
 
     // NotRolledBack 
     public int playerIndex;
+    public string name;
     
     private MLGameManager GM;
 
-    public MLCharacter(int playerIndex, fp2 startingPosition, MLAnimationData[] animData) {
+    public MLCharacter(int playerIndex, string name, fp2 startingPosition, MLAnimationData[] animData) {
+        this.name = name;
+        currentHealth = MLConsts.MAX_HEALTH;
         this.playerIndex = playerIndex;
         physicsObject = new PhysicsObject(startingPosition);
         animManager = new MLAnimationManager(animData);
@@ -148,10 +153,24 @@ public class MLCharacter : IMLSerializable, IMLCharacterPhysicsObject {
         MLCharacter hitCharacter = character.GetCharacter();
         hitCharacter.physicsObject.Launch(facingRight ? data.normalLaunchAngle : new fp2(-1 * data.normalLaunchAngle.x, data.normalLaunchAngle.y));
         hitCharacter.lag.ApplyLag(LagTypes.Hit, frameNumber, data.hitStun);
+        hitCharacter.ChangeHealth(-data.damage);
+        Debug.Log($"Dealt {data.damage} damage");
+    }
+
+    public bool IsDead() {
+        return currentHealth == 0;
+    }
+
+    public void ChangeHealth(fp delta) {
+        currentHealth = fpmath.clamp(currentHealth + delta, 0, MLConsts.MAX_HEALTH);
     }
 
     public void HandleDisconnectedFrame() {
         GM.physics.ProcessPhysicsFromInput(ref physicsObject, int2.zero, false);
+    }
+
+    public fp GetHealthPercentage() {
+        return currentHealth / MLConsts.MAX_HEALTH;
     }
 
     public void Serialize(BinaryWriter bw) {
