@@ -18,10 +18,10 @@ MonoBehaviour:
     sprite: {fileID: 21300000, guid: 1bec3950b520e67439fa94f00b1ea3c4, type: 3}
     hurtbox:
       serializedVersion: 2
-      x: 0
-      y: 0
-      width: 0
-      height: 0
+      x: -0.1461954
+      y: 1.578091
+      width: 1.315599
+      height: 2.397234
     hitboxes: []
     damage: 0
     launchAngle: {x: 0, y: 0}

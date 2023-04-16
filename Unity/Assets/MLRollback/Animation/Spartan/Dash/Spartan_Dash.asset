@@ -18,10 +18,10 @@ MonoBehaviour:
     sprite: {fileID: 21300000, guid: 5fae06d67bf63da44adb7dd4450751a7, type: 3}
     hurtbox:
       serializedVersion: 2
-      x: 0
-      y: 0
-      width: 0
-      height: 0
+      x: -0.4320464
+      y: 1.190605
+      width: 2.115983
+      height: 2.105031
     hitboxes: []
     damage: 0
     launchAngle: {x: 0, y: 0}
@@ -32,10 +32,10 @@ MonoBehaviour:
     sprite: {fileID: 21300000, guid: 6040f027695654f4c9ff870cd6753477, type: 3}
     hurtbox:
       serializedVersion: 2
-      x: 0
-      y: 0
-      width: 0
-      height: 0
+      x: -0.4320464
+      y: 1.190605
+      width: 2.115983
+      height: 2.105031
     hitboxes: []
     damage: 0
     launchAngle: {x: 0, y: 0}
@@ -46,10 +46,24 @@ MonoBehaviour:
     sprite: {fileID: 21300000, guid: 5fae06d67bf63da44adb7dd4450751a7, type: 3}
     hurtbox:
       serializedVersion: 2
-      x: 0
-      y: 0
-      width: 0
-      height: 0
+      x: -0.4320464
+      y: 1.190605
+      width: 2.115983
+      height: 2.105031
+    hitboxes: []
+    damage: 0
+    launchAngle: {x: 0, y: 0}
+    blockKnockback: 0
+    hitStun: 0
+    blockStun: 0
+  - frame: 8
+    sprite: {fileID: 21300000, guid: 5fae06d67bf63da44adb7dd4450751a7, type: 3}
+    hurtbox:
+      serializedVersion: 2
+      x: -0.4320464
+      y: 1.190605
+      width: 2.115983
+      height: 2.105031
     hitboxes: []
     damage: 0
     launchAngle: {x: 0, y: 0}

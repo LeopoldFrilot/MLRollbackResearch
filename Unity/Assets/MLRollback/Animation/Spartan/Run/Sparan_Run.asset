@@ -74,7 +74,7 @@ MonoBehaviour:
     sprite: {fileID: 21300000, guid: 984ffcac5ab4e4c4e9e260eb4bc5b389, type: 3}
     hurtbox:
       serializedVersion: 2
-      x: -0.4383507
+      x: 0.04437113
       y: 1.387524
       width: 1.518875
       height: 2.422643

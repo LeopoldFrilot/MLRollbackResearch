@@ -18,10 +18,10 @@ MonoBehaviour:
     sprite: {fileID: 21300000, guid: 419a20018a358194b83d62f736073560, type: 3}
     hurtbox:
       serializedVersion: 2
-      x: 0
-      y: 0
-      width: 0
-      height: 0
+      x: 0.6922994
+      y: 1.368467
+      width: 1.188554
+      height: 2.460756
     hitboxes: []
     damage: 0
     launchAngle: {x: 0, y: 0}
@@ -32,10 +32,10 @@ MonoBehaviour:
     sprite: {fileID: 21300000, guid: 56c44d3ea82e04d4eb99663868892788, type: 3}
     hurtbox:
       serializedVersion: 2
-      x: 0
-      y: 0
-      width: 0
-      height: 0
+      x: 1.378341
+      y: 1.368467
+      width: 1.3156
+      height: 2.460756
     hitboxes: []
     damage: 0
     launchAngle: {x: 0, y: 0}
@@ -46,10 +46,10 @@ MonoBehaviour:
     sprite: {fileID: 21300000, guid: dcbefcd586424da4ba6cd1f8707eafc6, type: 3}
     hurtbox:
       serializedVersion: 2
-      x: 0
-      y: 0
-      width: 0
-      height: 0
+      x: 1.041673
+      y: 1.368467
+      width: 1.175852
+      height: 2.460756
     hitboxes:
     - serializedVersion: 2
       x: 2.06326
@@ -65,10 +65,10 @@ MonoBehaviour:
     sprite: {fileID: 21300000, guid: 56c44d3ea82e04d4eb99663868892788, type: 3}
     hurtbox:
       serializedVersion: 2
-      x: 0
-      y: 0
-      width: 0
-      height: 0
+      x: 1.378341
+      y: 1.368467
+      width: 1.3156
+      height: 2.460756
     hitboxes: []
     damage: 0
     launchAngle: {x: 0, y: 0}
@@ -79,10 +79,10 @@ MonoBehaviour:
     sprite: {fileID: 21300000, guid: 419a20018a358194b83d62f736073560, type: 3}
     hurtbox:
       serializedVersion: 2
-      x: 0
-      y: 0
-      width: 0
-      height: 0
+      x: 0.6922994
+      y: 1.368467
+      width: 1.188554
+      height: 2.460756
     hitboxes: []
     damage: 0
     launchAngle: {x: 0, y: 0}
@@ -93,10 +93,10 @@ MonoBehaviour:
     sprite: {fileID: 21300000, guid: 419a20018a358194b83d62f736073560, type: 3}
     hurtbox:
       serializedVersion: 2
-      x: 0
-      y: 0
-      width: 0
-      height: 0
+      x: 0.6922994
+      y: 1.368467
+      width: 1.188554
+      height: 2.460756
     hitboxes: []
     damage: 0
     launchAngle: {x: 0, y: 0}
