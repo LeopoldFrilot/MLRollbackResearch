@@ -23,16 +23,16 @@ public class MLInput {
         }
     }
 
-    public static FrameButtons ParseInputs(long input, out string debugString) {
+    public static FrameButtons ParseInputs(long input, out string debugString, bool shouldFlipInputs = false) {
         List<Buttons> frameButtons = new List<Buttons>();
         StringBuilder SB = new StringBuilder("");
         if ((input & MLConsts.INPUT_LEFT) != 0) {
-            frameButtons.Add(Buttons.Left);
-            SB.Append(" Left,");
+            frameButtons.Add(shouldFlipInputs ? Buttons.Right : Buttons.Left);
+            SB.Append(shouldFlipInputs ? " Right," : " Left,");
         }
         if ((input & MLConsts.INPUT_RIGHT) != 0) {
-            frameButtons.Add(Buttons.Right);
-            SB.Append(" Right,");
+            frameButtons.Add(shouldFlipInputs ? Buttons.Left : Buttons.Right);
+            SB.Append(shouldFlipInputs ? " Left," : " Right,");
         }
         if ((input & MLConsts.INPUT_UP) != 0) {
             frameButtons.Add(Buttons.Up);
@@ -87,13 +87,13 @@ public class MLInput {
                 if (Input.GetKey(KeyCode.LeftShift)) {
                     input |= MLConsts.INPUT_DASH;
                 }
-                if (Input.GetKey(KeyCode.E)) {
+                if (Input.GetKey(KeyCode.I)) {
                     input |= MLConsts.INPUT_LIT_ATTACK;
                 }
-                if (Input.GetKey(KeyCode.R)) {
+                if (Input.GetKey(KeyCode.O)) {
                     input |= MLConsts.INPUT_MED_ATTACK;
                 }
-                if (Input.GetKey(KeyCode.T)) {
+                if (Input.GetKey(KeyCode.P)) {
                     input |= MLConsts.INPUT_HEV_ATTACK;
                 }
                 if (Input.GetKey(KeyCode.LeftControl)) {

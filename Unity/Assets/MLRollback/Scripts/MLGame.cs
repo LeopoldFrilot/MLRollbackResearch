@@ -1,5 +1,6 @@
 ﻿using SharedGame;
 using System;
+using System.Collections.Generic;
 using System.IO;
 using System.Text;
 using Unity.Collections;
@@ -11,18 +12,26 @@ public class MLGame : IGame, IMLSerializable {
     public int FrameNumber { get; private set; }
     public int Checksum => GetHashCode();
     public MLCharacter[] characters;
-
+    public int gameOverFrame;
+    public List<long>[] playerInputs;
+    
+    // Not rolled back
     private MLGameManager GM;
+    private List<long> AIData;
 
-    public MLGame(int numPlayers, MLAnimationData[] allAnimData) {
+    public MLGame(int numPlayers, MLAnimationData[] allAnimData, List<long> AIData) {
         FrameNumber = 0;
         GM = GameManager.Instance as MLGameManager;
         characters = new MLCharacter[Mathf.Min(numPlayers, MLConsts.MAX_PLAYERS)];
+        playerInputs = new List<long>[characters.Length];
         for (int i = 0; i < characters.Length; i++) {
             characters[i] = new MLCharacter(i, $"Player {i + 1}", GetStartingPosition(i), allAnimData);
+            playerInputs[i] = new List<long>();
             IMLCharacterPhysicsObject PO = characters[i];
             GM.physics.RegisterCharacterObject(ref PO);
         }
+        gameOverFrame = -1;
+        this.AIData = AIData;
     }
 
     // Order should be: Physics->Animation->InputProcessing->GameLogic
@@ -39,23 +48,47 @@ public class MLGame : IGame, IMLSerializable {
         }
 
         // InputProcessing/GameLogic
+        if (GameOver()) {
+            if (FrameNumber == gameOverFrame) {
+                GM.EndGame();
+            }
+            return;
+        }
+        
         for (int i = 0; i < characters.Length; i++) {
             MLInput.FrameButtons frameButtons = new MLInput.FrameButtons();
             if ((disconnectFlags & (1 << i)) != 0) {
                 characters[i].HandleDisconnectedFrame();
             }
             else {
-                frameButtons = MLInput.ParseInputs(inputs[i], out string debugString);
-                if (debugString != "") {
-                    GGPORunner.LogGame($"Inputs frame {FrameNumber}, Player: {characters[i].playerIndex}: {debugString}");
+                if (i == 1 && AIEnabled()) {
+                    frameButtons = MLInput.ParseInputs(AIData[FrameNumber], out string debugString, true);
+                    if (debugString != "") {
+                        GGPORunner.LogGame($"Inputs frame {FrameNumber}, Player: {characters[i].playerIndex}: {debugString}");
+                    }
+                }
+                else {
+                    frameButtons = MLInput.ParseInputs(inputs[i], out string debugString);
+                    if (debugString != "") {
+                        GGPORunner.LogGame($"Inputs frame {FrameNumber}, Player: {characters[i].playerIndex}: {debugString}");
+                    }
                 }
             }
             if (!characters[i].IsDead()) {
                 characters[i].UseInput(frameButtons, FrameNumber);
             }
+            else {
+                StartEndGame(FrameNumber);
+            }
             
             characters[i].lag.UpdateLag(FrameNumber);
+            
+            playerInputs[i].Add(inputs[i]);
         }
+    }
+
+    private void StartEndGame(int frameNumber) {
+        gameOverFrame = frameNumber + MLConsts.FPS * MLConsts.END_GAME_DELAY;
     }
 
     private void UpdateAnimation(MLCharacter character) {
@@ -94,6 +127,14 @@ public class MLGame : IGame, IMLSerializable {
         }  
     }
 
+    public bool GameOver() {
+        return gameOverFrame != -1;
+    }
+
+    private bool AIEnabled() {
+        return AIData.Count > 0 && FrameNumber < AIData.Count;
+    }
+
     #region DONE_FOR_NOW
     public void LogInfo(string filename) {
         StringBuilder SB = new StringBuilder("");
@@ -117,6 +158,15 @@ public class MLGame : IGame, IMLSerializable {
         {
             character.Deserialize(br);
         }
+        
+        int playerInputsCount = br.ReadInt32();
+        playerInputs = new List<long>[characterCount];
+        for (int i = 0; i < characterCount; i++) {
+            playerInputs[i] = new List<long>();
+            for (int j = 0; j < playerInputsCount; j++) {
+                playerInputs[i].Add(br.ReadInt64());
+            }
+        }
     }
 
     public void Serialize(BinaryWriter bw) {
@@ -124,6 +174,13 @@ public class MLGame : IGame, IMLSerializable {
         bw.Write(characters.Length);
         for (int i = 0; i < characters.Length; i++) {
             characters[i].Serialize(bw);
+        }
+        
+        bw.Write(this.playerInputs[0].Count);
+        for (int i = 0; i < characters.Length; i++) {
+            for (int j = 0; j < playerInputs.Length; j++) {
+                bw.Write(playerInputs[i][j]);
+            }
         }
     }
     
@@ -133,6 +190,7 @@ public class MLGame : IGame, IMLSerializable {
         foreach (var character in characters) {
             hashCode = hashCode * -1521134295 + character.GetHashCode();
         }
+        hashCode = hashCode * -1521134295 + playerInputs.GetHashCode();
         return hashCode;
     }
     #endregion

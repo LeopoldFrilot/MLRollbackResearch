@@ -19,6 +19,8 @@ public static class MLConsts {
 
     public const int STARTING_POSITION_X = 4;
     public const int MAX_ROUND_TIME = 99;
+    public const int END_GAME_DELAY = 5;
+    public const int FPS = 60;
 
     public static int GetLagAmount(LagTypes type) {
         switch (type) {
