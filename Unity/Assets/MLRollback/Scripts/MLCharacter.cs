@@ -3,7 +3,6 @@ using System;
 using System.IO;
 using Unity.Mathematics;
 using Unity.Mathematics.FixedPoint;
-using UnityEngine;
 
 [Serializable]
 public class MLCharacter : IMLSerializable, IMLCharacterPhysicsObject {
@@ -12,6 +11,9 @@ public class MLCharacter : IMLSerializable, IMLCharacterPhysicsObject {
     public MLLag lag;
     public MLAnimationManager animManager;
     public fp currentHealth;
+    public fp currentBlock;
+
+    private bool isBlocking;
 
     // NotRolledBack 
     public int playerIndex;
@@ -22,6 +24,7 @@ public class MLCharacter : IMLSerializable, IMLCharacterPhysicsObject {
     public MLCharacter(int playerIndex, string name, fp2 startingPosition, MLAnimationData[] animData) {
         this.name = name;
         currentHealth = MLConsts.MAX_HEALTH;
+        currentBlock = MLConsts.MAX_BLOCK;
         this.playerIndex = playerIndex;
         physicsObject = new PhysicsObject(startingPosition);
         animManager = new MLAnimationManager(animData);
@@ -65,57 +68,68 @@ public class MLCharacter : IMLSerializable, IMLCharacterPhysicsObject {
         int2 movementTracking = int2.zero;
         bool dash = false;
         bool grounded = GM.physics.IsGrounded(physicsObject.curPosition);
+        bool blockedThisFrame = false;
         foreach (var button in frameButtons.buttons) {
             switch (button) {
                 case MLInput.Buttons.Left:
-                    if (lag.GetLagType() is LagTypes.None or LagTypes.JumpStart) {
+                    if (!IsBlocking() && lag.GetLagType() is LagTypes.None or LagTypes.JumpStart) {
                         movementTracking += new int2(-1, 0);
                     }
                     break;
                 case MLInput.Buttons.Right:
-                    if (lag.GetLagType() is LagTypes.None or LagTypes.JumpStart) {
+                    if (!IsBlocking() && lag.GetLagType() is LagTypes.None or LagTypes.JumpStart) {
                         movementTracking += new int2(1, 0);
                     }
                     break;
                 case MLInput.Buttons.Up:
-                    if (lag.GetLagType() is LagTypes.None or LagTypes.JumpStart) {
+                    if (!IsBlocking() && lag.GetLagType() is LagTypes.None or LagTypes.JumpStart) {
                         movementTracking += new int2(0, 1);
                     }
                     break;
                 case MLInput.Buttons.Down:
-                    if (lag.GetLagType() is LagTypes.None or LagTypes.JumpStart) {
+                    if (!IsBlocking() && lag.GetLagType() is LagTypes.None or LagTypes.JumpStart) {
                         movementTracking += new int2(0, -1);
                     }
                     break;
                 case MLInput.Buttons.Dash:
-                    if (lag.GetLagType() == LagTypes.None) {
+                    if (!IsBlocking() && lag.GetLagType() == LagTypes.None) {
                         dash = true;
                         animManager.StartAnimation(AnimationTypes.Dash, grounded);
                         lag.ApplyLag(LagTypes.Dash, frameNumber);
                     }
                     break;
                 case MLInput.Buttons.Light:
-                    if (lag.GetLagType() == LagTypes.None && grounded) {
+                    if (!IsBlocking() && lag.GetLagType() == LagTypes.None && grounded) {
                         animManager.StartAnimation(AnimationTypes.Light, grounded);
                         lag.ApplyLag(LagTypes.Attack, frameNumber, animManager.GetCurrentAnimationData().frameLength);
                     }
                     break;
                 case MLInput.Buttons.Medium:
-                    if (lag.GetLagType() == LagTypes.None && grounded) {
+                    if (!IsBlocking() && lag.GetLagType() == LagTypes.None && grounded) {
                         animManager.StartAnimation(AnimationTypes.Medium, grounded);
                         lag.ApplyLag(LagTypes.Attack, frameNumber, animManager.GetCurrentAnimationData().frameLength);
                     }
                     break;
                 case MLInput.Buttons.Heavy:
-                    if (lag.GetLagType() == LagTypes.None && grounded) {
+                    if (!IsBlocking() && lag.GetLagType() == LagTypes.None && grounded) {
                         animManager.StartAnimation(AnimationTypes.Heavy, grounded);
                         lag.ApplyLag(LagTypes.Attack, frameNumber, animManager.GetCurrentAnimationData().frameLength);
                     }
                     break;
+                case MLInput.Buttons.Block:
+                    if ((lag.GetLagType() == LagTypes.None || lag.GetLagType() == LagTypes.Block) && grounded) {
+                        blockedThisFrame = true;
+                        animManager.StartAnimation(AnimationTypes.Block, grounded);
+                    }
+                    break;
             }
         }
-        
+        isBlocking = blockedThisFrame;
         GM.physics.ProcessPhysicsFromInput(ref physicsObject, movementTracking, dash);
+    }
+
+    public bool IsBlocking() {
+        return isBlocking;
     }
 
     public ref PhysicsObject GetPhysicsObject() {
@@ -151,10 +165,17 @@ public class MLCharacter : IMLSerializable, IMLCharacterPhysicsObject {
         animManager.currentAnimationCombatUsed = true;
         MLAnimationFrameData data = animManager.GetCurrentAnimationFrameData();
         MLCharacter hitCharacter = character.GetCharacter();
-        hitCharacter.physicsObject.Launch(facingRight ? data.normalLaunchAngle : new fp2(-1 * data.normalLaunchAngle.x, data.normalLaunchAngle.y));
-        hitCharacter.lag.ApplyLag(LagTypes.Hit, frameNumber, data.hitStun);
-        hitCharacter.ChangeHealth(-data.damage);
-        Debug.Log($"Dealt {data.damage} damage");
+        if (hitCharacter.IsBlocking()) {
+            hitCharacter.physicsObject.Launch(facingRight ? data.blockLaunchAngle * (fp).25 : new fp2(-1 * data.blockLaunchAngle.x * (fp).25, 0));
+            physicsObject.Launch(!facingRight ? data.blockLaunchAngle * (fp).75 : new fp2(-1 * data.blockLaunchAngle.x * (fp).75, 0));
+            hitCharacter.lag.ApplyLag(LagTypes.Block, frameNumber, data.blockStun);
+            hitCharacter.ChangeBlock(-data.damage);
+        }
+        else {
+            hitCharacter.physicsObject.Launch(facingRight ? data.normalLaunchAngle : new fp2(-1 * data.normalLaunchAngle.x, data.normalLaunchAngle.y));
+            hitCharacter.lag.ApplyLag(LagTypes.Hit, frameNumber, data.hitStun);
+            hitCharacter.ChangeHealth(-data.damage);
+        }
     }
 
     public bool IsDead() {
@@ -163,6 +184,14 @@ public class MLCharacter : IMLSerializable, IMLCharacterPhysicsObject {
 
     public void ChangeHealth(fp delta) {
         currentHealth = fpmath.clamp(currentHealth + delta, 0, MLConsts.MAX_HEALTH);
+    }
+    
+    public void ChangeBlock(fp delta) {
+        fp newBlock = currentBlock + delta;
+        currentBlock = fpmath.clamp(newBlock, 0, MLConsts.MAX_BLOCK);
+        if (newBlock < 0) {
+            ChangeHealth(newBlock);
+        }
     }
 
     public void HandleDisconnectedFrame() {
@@ -173,11 +202,18 @@ public class MLCharacter : IMLSerializable, IMLCharacterPhysicsObject {
         return currentHealth / MLConsts.MAX_HEALTH;
     }
 
+    public fp GetBlockPercentage() {
+        return currentBlock / MLConsts.MAX_BLOCK;
+    }
+
     public void Serialize(BinaryWriter bw) {
         physicsObject.Serialize(bw);
         bw.Write(facingRight);
         lag.Serialize(bw);
         animManager.Serialize(bw);
+        bw.Write(currentHealth);
+        bw.Write(currentBlock);
+        bw.Write(isBlocking);
     }
 
     public void Deserialize(BinaryReader br) {
@@ -185,6 +221,9 @@ public class MLCharacter : IMLSerializable, IMLCharacterPhysicsObject {
         facingRight = br.ReadBoolean();
         lag.Deserialize(br);
         animManager.Deserialize(br);
+        currentHealth = br.ReadDecimal();
+        currentBlock = br.ReadDecimal();
+        isBlocking = br.ReadBoolean();
     }
 
     public override int GetHashCode() {
@@ -193,6 +232,9 @@ public class MLCharacter : IMLSerializable, IMLCharacterPhysicsObject {
         hashCode = hashCode * -1521134295 + facingRight.GetHashCode();
         hashCode = hashCode * -1521134295 + lag.GetHashCode();
         hashCode = hashCode * -1521134295 + animManager.GetHashCode();
+        hashCode = hashCode * -1521134295 + currentHealth.GetHashCode();
+        hashCode = hashCode * -1521134295 + currentBlock.GetHashCode();
+        hashCode = hashCode * -1521134295 + isBlocking.GetHashCode();
         return hashCode;
     }
 }

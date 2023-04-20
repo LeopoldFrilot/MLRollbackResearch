@@ -7,7 +7,8 @@ public enum LagTypes {
     Dash,
     LandingLag,
     Attack,
-    Hit
+    Hit,
+    Block
 }
 
 public class MLLag : IMLSerializable {

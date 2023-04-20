@@ -1,6 +1,7 @@
 ﻿using Unity.Mathematics.FixedPoint;
 
 public static class MLConsts {
+    public const int MAX_BLOCK = 50;
     public const int MAX_HEALTH = 100;
     public const int PLAY_AREA_WIDTH = 16;
     public const int PLAY_AREA_HEIGHT = 99;

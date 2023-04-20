@@ -49,9 +49,9 @@ MonoBehaviour:
       height: 0.6823878
     damage: 15
     launchAngle: {x: 0.05, y: 0.5}
-    blockKnockback: 0
+    blockKnockback: 1
     hitStun: 50
-    blockStun: 0
+    blockStun: 10
   - frame: 20
     sprite: {fileID: 21300000, guid: 7eb20791fc630b7479dac7771ac6c352, type: 3}
     hurtbox:

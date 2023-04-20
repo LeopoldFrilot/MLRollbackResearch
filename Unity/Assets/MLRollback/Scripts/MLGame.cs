@@ -57,8 +57,9 @@ public class MLGame : IGame, IMLSerializable {
         
         for (int i = 0; i < characters.Length; i++) {
             MLInput.FrameButtons frameButtons = new MLInput.FrameButtons();
+            MLCharacter character = characters[i];
             if ((disconnectFlags & (1 << i)) != 0) {
-                characters[i].HandleDisconnectedFrame();
+                character.HandleDisconnectedFrame();
             }
             else {
                 if (i == 1 && AIEnabled()) {
@@ -74,14 +75,17 @@ public class MLGame : IGame, IMLSerializable {
                     }
                 }
             }
-            if (!characters[i].IsDead()) {
-                characters[i].UseInput(frameButtons, FrameNumber);
+            if (!character.IsDead()) {
+                character.UseInput(frameButtons, FrameNumber);
             }
             else {
                 StartEndGame(FrameNumber);
             }
             
-            characters[i].lag.UpdateLag(FrameNumber);
+            character.lag.UpdateLag(FrameNumber);
+            if (character.lag.GetLagType() != LagTypes.Block && character.lag.GetLagType() != LagTypes.Hit) {
+                character.ChangeBlock((fp).1f);
+            }
             
             playerInputs[i].Add(inputs[i]);
         }
@@ -110,7 +114,10 @@ public class MLGame : IGame, IMLSerializable {
                 anim.ProgressAnimation(grounded);
             }
         }
-        if (anim.curAnimationType == AnimationTypes.Idle && !grounded) {
+        else if (anim.curAnimationType == AnimationTypes.Block && character.lag.GetLagType() != LagTypes.Block) {
+            anim.StartAnimation(AnimationTypes.Idle, grounded);
+        }
+        else if (anim.curAnimationType == AnimationTypes.Idle && !grounded) {
             anim.StartAnimation(AnimationTypes.Airborne, grounded);
         }
         else if (anim.curAnimationType == AnimationTypes.Idle && xVelocity != 0) {

@@ -1295,7 +1295,7 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Sprite
       value: 
-      objectReference: {fileID: 21300000, guid: 0552e0ffe7bb32e42beee7d172b4cf5a,
+      objectReference: {fileID: 21300000, guid: f0660044127518b468cb272df2d3e26e,
         type: 3}
     - target: {fileID: 2550287184968765286, guid: 4018c8c5cd5d4f8478e19ce30026dfe5,
         type: 3}
@@ -1321,6 +1321,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Name
       value: TestCharacter
+      objectReference: {fileID: 0}
+    - target: {fileID: 8849836321361442674, guid: 4018c8c5cd5d4f8478e19ce30026dfe5,
+        type: 3}
+      propertyPath: animations.Array.size
+      value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -1373,7 +1378,7 @@ BoxCollider2D:
   m_IsTrigger: 0
   m_UsedByEffector: 0
   m_UsedByComposite: 0
-  m_Offset: {x: 0.006258011, y: 1.8258286}
+  m_Offset: {x: -0.29797268, y: 1.3760958}
   m_SpriteTilingProperty:
     border: {x: 0, y: 0, z: 0, w: 0}
     pivot: {x: 0, y: 0}
@@ -1384,7 +1389,7 @@ BoxCollider2D:
     adaptiveTiling: 0
   m_AutoTiling: 0
   serializedVersion: 2
-  m_Size: {x: 1.2901917, y: 2.5115747}
+  m_Size: {x: 1.6870136, y: 2.458665}
   m_EdgeRadius: 0
 --- !u!61 &1679042281
 BoxCollider2D:
@@ -1568,6 +1573,21 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 1620017610096902084, guid: e12bb200127cf5844be0a4dbf25ab5b3,
+        type: 3}
+      propertyPath: m_AnchorMax.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1620017610096902084, guid: e12bb200127cf5844be0a4dbf25ab5b3,
+        type: 3}
+      propertyPath: m_AnchorMax.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1620017610096902084, guid: e12bb200127cf5844be0a4dbf25ab5b3,
+        type: 3}
+      propertyPath: m_AnchorMin.x
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 4250201887280215615, guid: e12bb200127cf5844be0a4dbf25ab5b3,
         type: 3}
       propertyPath: m_AnchorMax.x
@@ -1709,6 +1729,11 @@ PrefabInstance:
     - target: {fileID: 4891033373272289396, guid: 84bb005850aeb9b43940b35b1cdfa04c,
         type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6482152302811093691, guid: 84bb005850aeb9b43940b35b1cdfa04c,
+        type: 3}
+      propertyPath: m_AnchorMax.y
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 8463827596704142144, guid: 84bb005850aeb9b43940b35b1cdfa04c,

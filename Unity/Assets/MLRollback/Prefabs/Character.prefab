@@ -483,17 +483,17 @@ MonoBehaviour:
   bodyArt: {fileID: 2550287184968765286}
   debugCollider: {fileID: 4899763251535092730}
   animations:
-  - {fileID: 11400000, guid: 65a54eb83894d344ab6f79d287dfdd89, type: 2}
   - {fileID: 11400000, guid: 4295675cc8625014fba974d9cd301f73, type: 2}
+  - {fileID: 11400000, guid: 4d274c315e3f93a48b651bd21c4bb58f, type: 2}
+  - {fileID: 11400000, guid: 65a54eb83894d344ab6f79d287dfdd89, type: 2}
+  - {fileID: 11400000, guid: ab434e3c4104e094395a74a08ec4492f, type: 2}
   - {fileID: 11400000, guid: caec4d40665add441aaf6dcf53550ee0, type: 2}
   - {fileID: 11400000, guid: 90149760ca3af8f4bad7a393801ac36f, type: 2}
   - {fileID: 11400000, guid: 0c7cc6e7c70c97f4ea2aeb6a9fc2c132, type: 2}
   - {fileID: 11400000, guid: 6742dc9fc1ca72245a922981f7bbc0cd, type: 2}
-  - {fileID: 11400000, guid: 6742dc9fc1ca72245a922981f7bbc0cd, type: 2}
   - {fileID: 11400000, guid: 76cdf6d44c41e0b478e066187834557c, type: 2}
   - {fileID: 11400000, guid: 25aadf4da923c224f9208caf442caf19, type: 2}
   - {fileID: 11400000, guid: f526bf8d0855d7d409e63fa2b11b2b09, type: 2}
-  - {fileID: 11400000, guid: ab434e3c4104e094395a74a08ec4492f, type: 2}
 --- !u!61 &4899763251535092730
 BoxCollider2D:
   m_ObjectHideFlags: 0

@@ -12,7 +12,8 @@ public enum AnimationTypes {
     Heavy,
     Dead,
     Airborne,
-    Hit
+    Hit,
+    Block
 }
 
 public struct MLAnimationFrameData {

@@ -15,7 +15,6 @@ public class MLUCharacter : MonoBehaviour {
     [SerializeField] private BoxCollider2D debugCollider;
     public List<MLUAnimationSO> animations;
 
-    private float healthPercentage;
     private MLUStatusBar statusBar;
 
     private void Awake() {
@@ -46,11 +45,11 @@ public class MLUCharacter : MonoBehaviour {
             DrawRect(hitbox, Color.green);
         }
 
-        float newHealthPercentage = (float)character.GetHealthPercentage();
-        if (healthPercentage != newHealthPercentage) {
-            healthPercentage = newHealthPercentage;
-            statusBar.UpdateHealth(character.playerIndex, newHealthPercentage, character.name);
-        }
+        statusBar.UpdateHealth(
+            character.playerIndex, 
+            (float)character.GetHealthPercentage(), 
+            (float)character.GetBlockPercentage(),
+            character.name);
     }
 
     private void UpdatePosition(fp2 newPosition) {
