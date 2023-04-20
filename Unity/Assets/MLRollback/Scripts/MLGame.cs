@@ -185,8 +185,9 @@ public class MLGame : IGame, IMLSerializable {
         
         bw.Write(this.playerInputs[0].Count);
         for (int i = 0; i < characters.Length; i++) {
-            for (int j = 0; j < playerInputs.Length; j++) {
-                bw.Write(playerInputs[i][j]);
+            var inputs = playerInputs[i];
+            for (int j = 0; j < inputs.Count; j++) {
+                bw.Write(inputs[j]);
             }
         }
     }
