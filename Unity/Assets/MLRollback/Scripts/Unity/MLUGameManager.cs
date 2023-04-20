@@ -6,13 +6,13 @@ public class MLUGameManager : MonoBehaviour {
     [SerializeField] private GameObject characterPrefab;
     
     private MLUCharacter[] registeredCharacters = Array.Empty<MLUCharacter>();
-    private GameManager GameManager => GameManager.Instance;
+    private GameManager gameManager => GameManager.Instance;
 
     private bool savedInputs;
 
     private void Update() {
-        if (GameManager.IsRunning) {
-            UpdateGame(GameManager.Runner);
+        if (gameManager.IsRunning) {
+            UpdateGame(gameManager.Runner);
         }
     }
 
@@ -24,7 +24,7 @@ public class MLUGameManager : MonoBehaviour {
         
         if (gameState.GameOver()) {
             if (!savedInputs) {
-                MLGameManager GM = GameManager as MLGameManager;
+                MLGameManager GM = gameManager as MLGameManager;
                 if (GM) {
                     GM.inputDataSO.AddInputData(gameState.playerInputs);
                 }
