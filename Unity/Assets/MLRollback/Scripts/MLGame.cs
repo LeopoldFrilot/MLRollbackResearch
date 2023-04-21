@@ -6,6 +6,7 @@ using System.Text;
 using Unity.Collections;
 using Unity.Mathematics.FixedPoint;
 using UnityEngine;
+using UnityGGPO;
 
 [Serializable]
 public class MLGame : IGame, IMLSerializable {
@@ -13,29 +14,33 @@ public class MLGame : IGame, IMLSerializable {
     public int Checksum => GetHashCode();
     public MLCharacter[] characters;
     public int gameOverFrame;
-    public List<long>[] playerInputs;
+    //public List<long>[] playerInputs;
+    private int lastFrameTime;
     
     // Not rolled back
     private MLGameManager GM;
-    private List<long> AIData;
+    //private List<long> AIData;
 
-    public MLGame(int numPlayers, MLAnimationData[] allAnimData, List<long> AIData) {
+    public MLGame(int numPlayers, MLAnimationData[] allAnimData/*, List<long> AIData*/) {
         FrameNumber = 0;
         GM = GameManager.Instance as MLGameManager;
         characters = new MLCharacter[Mathf.Min(numPlayers, MLConsts.MAX_PLAYERS)];
-        playerInputs = new List<long>[characters.Length];
+        //playerInputs = new List<long>[characters.Length];
         for (int i = 0; i < characters.Length; i++) {
             characters[i] = new MLCharacter(i, $"Player {i + 1}", GetStartingPosition(i), allAnimData);
-            playerInputs[i] = new List<long>();
+            //playerInputs[i] = new List<long>();
             IMLCharacterPhysicsObject PO = characters[i];
             GM.physics.RegisterCharacterObject(ref PO);
         }
         gameOverFrame = -1;
-        this.AIData = AIData;
+        lastFrameTime = 0;
+        //this.AIData = AIData;
     }
 
     // Order should be: Physics->Animation->InputProcessing->GameLogic
     public void Update(long[] inputs, int disconnectFlags) {
+        Debug.Log($"Framerate: {1f/((Utils.TimeGetTime() - lastFrameTime)/1000f)}");
+        lastFrameTime = Utils.TimeGetTime();
         FrameNumber++;
         
         // Physics
@@ -62,18 +67,19 @@ public class MLGame : IGame, IMLSerializable {
                 character.HandleDisconnectedFrame();
             }
             else {
+                /*
                 if (i == 1 && AIEnabled()) {
                     frameButtons = MLInput.ParseInputs(AIData[FrameNumber], out string debugString, true);
                     if (debugString != "") {
                         GGPORunner.LogGame($"Inputs frame {FrameNumber}, Player: {characters[i].playerIndex}: {debugString}");
                     }
                 }
-                else {
+                else {*/
                     frameButtons = MLInput.ParseInputs(inputs[i], out string debugString);
                     if (debugString != "") {
                         GGPORunner.LogGame($"Inputs frame {FrameNumber}, Player: {characters[i].playerIndex}: {debugString}");
                     }
-                }
+                //}
             }
             if (!character.IsDead()) {
                 character.UseInput(frameButtons, FrameNumber);
@@ -87,7 +93,7 @@ public class MLGame : IGame, IMLSerializable {
                 character.ChangeBlock((fp).1f);
             }
             
-            playerInputs[i].Add(inputs[i]);
+            //playerInputs[i].Add(inputs[i]);
         }
     }
 
@@ -138,9 +144,10 @@ public class MLGame : IGame, IMLSerializable {
         return gameOverFrame != -1;
     }
 
+    /*
     private bool AIEnabled() {
         return AIData.Count > 0 && FrameNumber < AIData.Count;
-    }
+    }*/
 
     #region DONE_FOR_NOW
     public void LogInfo(string filename) {
@@ -165,7 +172,8 @@ public class MLGame : IGame, IMLSerializable {
         {
             character.Deserialize(br);
         }
-        
+        lastFrameTime = br.ReadInt32();
+        /*
         int playerInputsCount = br.ReadInt32();
         playerInputs = new List<long>[characterCount];
         for (int i = 0; i < characterCount; i++) {
@@ -173,7 +181,7 @@ public class MLGame : IGame, IMLSerializable {
             for (int j = 0; j < playerInputsCount; j++) {
                 playerInputs[i].Add(br.ReadInt64());
             }
-        }
+        }*/
     }
 
     public void Serialize(BinaryWriter bw) {
@@ -182,14 +190,15 @@ public class MLGame : IGame, IMLSerializable {
         for (int i = 0; i < characters.Length; i++) {
             characters[i].Serialize(bw);
         }
-        
+        bw.Write(lastFrameTime);
+        /*
         bw.Write(this.playerInputs[0].Count);
         for (int i = 0; i < characters.Length; i++) {
             var inputs = playerInputs[i];
             for (int j = 0; j < inputs.Count; j++) {
                 bw.Write(inputs[j]);
             }
-        }
+        }*/
     }
     
     public override int GetHashCode() {
@@ -198,7 +207,8 @@ public class MLGame : IGame, IMLSerializable {
         foreach (var character in characters) {
             hashCode = hashCode * -1521134295 + character.GetHashCode();
         }
-        hashCode = hashCode * -1521134295 + playerInputs.GetHashCode();
+        hashCode = hashCode * -1521134295 + lastFrameTime.GetHashCode();
+        //hashCode = hashCode * -1521134295 + playerInputs.GetHashCode();
         return hashCode;
     }
     #endregion

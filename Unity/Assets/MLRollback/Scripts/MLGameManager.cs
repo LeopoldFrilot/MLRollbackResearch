@@ -11,7 +11,7 @@ public class MLGameManager : GameManager {
     
     public override void StartLocalGame() {
         Setup();
-        StartGame(new LocalRunner(new MLGame(2, ExtractAnimData(), inputDataSO.GetRandomData(0))));
+        StartGame(new LocalRunner(new MLGame(2, ExtractAnimData()/*, inputDataSO.GetRandomData(0)*/)));
     }
 
     private MLAnimationData[] ExtractAnimData() {
@@ -25,7 +25,7 @@ public class MLGameManager : GameManager {
 
     public override void StartGGPOGame(IPerfUpdate perfPanel, IList<Connections> connections, int playerIndex) {
         Setup();
-        GGPORunner game = new GGPORunner("mlgame", new MLGame(connections.Count, ExtractAnimData(), null), perfPanel);
+        GGPORunner game = new GGPORunner("mlgame", new MLGame(connections.Count, ExtractAnimData()/*, null*/), perfPanel);
         game.Init(connections, playerIndex);
         StartGame(game);
     }

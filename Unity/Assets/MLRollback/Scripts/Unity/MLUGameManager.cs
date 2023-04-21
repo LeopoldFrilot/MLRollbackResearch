@@ -23,13 +23,14 @@ public class MLUGameManager : MonoBehaviour {
         }
         
         if (gameState.GameOver()) {
+            /*
             if (!savedInputs) {
                 MLGameManager GM = gameManager as MLGameManager;
                 if (GM) {
                     GM.inputDataSO.AddInputData(gameState.playerInputs);
                 }
                 savedInputs = true;
-            }
+            }*/
         }
         
         GameInfo info = runner.GameInfo;
