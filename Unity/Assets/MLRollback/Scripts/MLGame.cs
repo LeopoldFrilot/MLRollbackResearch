@@ -15,7 +15,6 @@ public class MLGame : IGame, IMLSerializable {
     public MLCharacter[] characters;
     public int gameOverFrame;
     //public List<long>[] playerInputs;
-    private int lastFrameTime;
     
     // Not rolled back
     private MLGameManager GM;
@@ -33,14 +32,11 @@ public class MLGame : IGame, IMLSerializable {
             GM.physics.RegisterCharacterObject(ref PO);
         }
         gameOverFrame = -1;
-        lastFrameTime = 0;
         //this.AIData = AIData;
     }
 
     // Order should be: Physics->Animation->InputProcessing->GameLogic
     public void Update(long[] inputs, int disconnectFlags) {
-        Debug.Log($"Framerate: {1f/((Utils.TimeGetTime() - lastFrameTime)/1000f)}");
-        lastFrameTime = Utils.TimeGetTime();
         FrameNumber++;
         
         // Physics
@@ -172,7 +168,6 @@ public class MLGame : IGame, IMLSerializable {
         {
             character.Deserialize(br);
         }
-        lastFrameTime = br.ReadInt32();
         /*
         int playerInputsCount = br.ReadInt32();
         playerInputs = new List<long>[characterCount];
@@ -190,7 +185,6 @@ public class MLGame : IGame, IMLSerializable {
         for (int i = 0; i < characters.Length; i++) {
             characters[i].Serialize(bw);
         }
-        bw.Write(lastFrameTime);
         /*
         bw.Write(this.playerInputs[0].Count);
         for (int i = 0; i < characters.Length; i++) {
@@ -207,7 +201,6 @@ public class MLGame : IGame, IMLSerializable {
         foreach (var character in characters) {
             hashCode = hashCode * -1521134295 + character.GetHashCode();
         }
-        hashCode = hashCode * -1521134295 + lastFrameTime.GetHashCode();
         //hashCode = hashCode * -1521134295 + playerInputs.GetHashCode();
         return hashCode;
     }
