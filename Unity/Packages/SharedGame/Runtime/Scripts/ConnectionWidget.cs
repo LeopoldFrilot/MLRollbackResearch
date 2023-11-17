@@ -1,6 +1,9 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
+using System.Net;
 using UnityEngine;
 using UnityEngine.UI;
+
 
 namespace SharedGame {
 
@@ -13,7 +16,7 @@ namespace SharedGame {
 
         private GameManager gameManager => GameManager.Instance;
 
-        private void Awake() {
+        protected virtual void Awake() {
             gameManager.OnRunningChanged += OnRunningChanged;
             btnConnect.onClick.AddListener(OnConnect);
 
@@ -31,7 +34,7 @@ namespace SharedGame {
             inpPlayerIndex.text = "0";
             LoadConnectionInfo(connections);
         }
-
+        
         private void OnConnect() {
             if (tgLocal.isOn) {
                 gameManager.StartLocalGame();
